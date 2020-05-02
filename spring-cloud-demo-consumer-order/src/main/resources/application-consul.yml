@@ -1,0 +1,24 @@
+
+
+server:
+  port: 80
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
+spring:
+  application:
+    name: cloud-consumer-order
+
+  #### consul 注册中心  注解与zookeeper 一致
+  cloud:
+    consul:
+      host: 192.168.35.3
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}

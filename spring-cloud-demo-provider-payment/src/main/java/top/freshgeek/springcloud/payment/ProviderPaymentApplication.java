@@ -15,15 +15,15 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @EnableSwagger2
 // 在eureka 环境下才加
-// @EnableEurekaClient
+@EnableEurekaClient
 // zookeeper 单独用这个即可
 @EnableDiscoveryClient
 @SpringBootApplication
 @EntityScan("top.freshgeek.springcloud.entity")
 public class ProviderPaymentApplication {
 
-
     public static void main(String[] args) {
         SpringApplication.run(ProviderPaymentApplication.class,args);
     }
+
 }

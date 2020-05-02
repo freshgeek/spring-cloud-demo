@@ -1,5 +1,5 @@
 server:
-  port: 8004
+  port: 8005
 
 spring:
   application:
@@ -16,8 +16,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-# 单个就配置单独一个即可
+#### consul 注册中心  注解与zookeeper 一致
   cloud:
-    zookeeper:
-      connect-string: localhost:2181,localhost:2182,localhost:2183
+    consul:
+      host: 192.168.35.3
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
 debug: true

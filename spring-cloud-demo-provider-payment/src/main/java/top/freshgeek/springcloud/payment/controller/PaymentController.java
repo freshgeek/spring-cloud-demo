@@ -26,7 +26,7 @@ public class PaymentController   {
     @Autowired
     private PaymentService paymentService;
 
-    @Autowired
+    @Autowired(required = false)
     private DiscoveryClient discoveryClient;
 
     @PostMapping("/create")
@@ -46,6 +46,11 @@ public class PaymentController   {
         List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
         instances.forEach(s->log.info("{}",s.toString()));
         return discoveryClient;
+    }
+
+    @GetMapping("zk")
+    public Object zk(){
+        return "zookeeper success ! ";
     }
 
 }
