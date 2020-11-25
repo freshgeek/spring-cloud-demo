@@ -90,3 +90,7 @@ public class HystrixDashboardApplication {
 然后启动 eureka 和 服务端 ,在路径中输入对应服务端的IP端口路径,如下:
 
 ![输入](../img/hystrix-dashboard-input.jpg)
+
+
+这里好像只能监控一个输入一个,感觉交互和监控功能上都稍微有点欠缺
+
