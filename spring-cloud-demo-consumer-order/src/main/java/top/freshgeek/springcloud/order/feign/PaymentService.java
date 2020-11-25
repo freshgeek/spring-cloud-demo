@@ -27,4 +27,7 @@ public interface PaymentService {
 
 	@GetMapping("/payment/pay-timeout")
 	CommonResult hystrixPayTimeout();
+
+	@GetMapping("/pay/{id}")
+	CommonResult payById(@PathVariable("id") int id);
 }

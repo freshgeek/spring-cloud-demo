@@ -30,4 +30,9 @@ public class FallbackPaymentService implements PaymentService {
 	public CommonResult hystrixPayTimeout() {
 		return null;
 	}
+
+	@Override
+	public CommonResult payById(int id) {
+		return null;
+	}
 }

@@ -114,6 +114,11 @@
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.spring.boot.starter.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool-all.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.projectlombok</groupId>

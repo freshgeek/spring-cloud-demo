@@ -190,3 +190,50 @@ public class MyRuleConfig {
 
 最后在启动类上面加上注解 `@EnableCircuitBreaker` 即完成
 
+
+
+
+
+## 服务熔断
+
+
+滑动窗口模式:
+- 打开
+- 半开
+- 关闭
+
+
+
+在开启了服务熔断之后
+
+```java
+
+
+	@HystrixCommand(fallbackMethod = "payByIdFallback", commandProperties = {
+			@HystrixProperty(name = "circuitBreaker.enabled", value = "true"),// 是否开启断路器
+			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),// 请求次数
+			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"), // 时间窗口期
+			@HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60"),// 失败率达到多少后跳闸
+	})
+	public CommonResult payById(Integer id) {
+		Assert.isTrue(id > 0, "金额必须大于零");
+		return CommonResult.of(200, "流水号:" + IdUtil.fastUUID() + "id :" + id);
+	}
+
+	public CommonResult payByIdFallback(Integer id) {
+		return CommonResult.of(200, "id 不能负数，请稍后再试，/(ㄒoㄒ)/~~   id: " + id);
+	}
+```
+
+设置熔断参数
+
+参数全部类型及默认在 `com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netflix.hystrix.HystrixCommandKey, com.netflix.hystrix.HystrixCommandProperties.Setter, java.lang.String)`
+ 
+ 
+ 
+然后再访问 `http://localhost:8001/payment/pay/1231` 
+`http://localhost:8001/payment/pay/-11231` 错误了一段时间后,不会立刻恢复 , 而是慢慢恢复
+ 
+
+
+

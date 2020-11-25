@@ -63,4 +63,10 @@ public class PaymentController {
 	public CommonResult hystrixPayTimeout() {
 		return paymentService.hystrix_pay_timeout();
 	}
+
+	@GetMapping("/pay/{id}")
+	public CommonResult payById(@PathVariable("id") int id) {
+		return paymentService.payById(id);
+	}
+
 }
