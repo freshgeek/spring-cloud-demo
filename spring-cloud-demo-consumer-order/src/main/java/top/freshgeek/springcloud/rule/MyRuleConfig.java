@@ -1,7 +1,6 @@
 package top.freshgeek.springcloud.rule;
 
-import com.netflix.loadbalancer.IRule;
-import com.netflix.loadbalancer.RandomRule;
+import com.netflix.loadbalancer.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +15,15 @@ public class MyRuleConfig {
 
     @Bean
     public IRule rule() {
-        return new RandomRule();
+        // 默认
+        RoundRobinRule roundRobinRule = new RoundRobinRule();
+        RandomRule randomRule = new RandomRule();
+        RetryRule retryRule = new RetryRule();
+        WeightedResponseTimeRule weightedResponseTimeRule = new WeightedResponseTimeRule();
+        BestAvailableRule bestAvailableRule = new BestAvailableRule();
+        AvailabilityFilteringRule availabilityFilteringRule = new AvailabilityFilteringRule();
+        ZoneAvoidanceRule zoneAvoidanceRule = new ZoneAvoidanceRule();
+        return new AvailabilityFilteringRule();
     }
 
 }

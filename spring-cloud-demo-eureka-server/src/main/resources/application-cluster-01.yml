@@ -15,7 +15,8 @@ eureka:
       defaultZone: http://eureka02:8762/eureka/
   server:
     enable-self-preservation: false
-    eviction-interval-timer-in-ms: 10
+    # 清理无效节点的时间间隔，默认60000毫秒，即60秒
+#    eviction-interval-timer-in-ms: 10
 spring:
   freemarker:
     template-loader-path: classpath:/templates/
