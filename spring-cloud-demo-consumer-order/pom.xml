@@ -28,6 +28,12 @@
         </dependency>
         <!--open feign 使用-->
 
+        <!-- hystrix-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>top.freshgeek.springcloud</groupId>
             <artifactId>spring-cloud-demo-common</artifactId>

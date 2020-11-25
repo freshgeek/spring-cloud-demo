@@ -43,20 +43,20 @@ public class PaymentService {
 	}
 
 
-	public CommonResult histrix_pay() {
-		return CommonResult.of(200, "histrix_pay : " + serverPort);
+	public CommonResult hystrix_pay() {
+		return CommonResult.of(200, "hystrix_pay : " + serverPort);
 	}
 
 	@HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
-			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")
 	})
-	public CommonResult histrix_pay_timeout() {
+	public CommonResult hystrix_pay_timeout() {
 		try {
 			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		return CommonResult.of(200, "histrix_pay : " + serverPort);
+		return CommonResult.of(200, "hystrix_pay_timeout : " + serverPort);
 	}
 
 

@@ -55,12 +55,12 @@ public class PaymentController {
 
 
 	@GetMapping("pay")
-	public CommonResult histrixPay() {
-		return paymentService.histrix_pay();
+	public CommonResult hystrixPay() {
+		return paymentService.hystrix_pay();
 	}
 
 	@GetMapping("pay-timeout")
-	public CommonResult histrixPayTimeout() {
-		return paymentService.histrix_pay_timeout();
+	public CommonResult hystrixPayTimeout() {
+		return paymentService.hystrix_pay_timeout();
 	}
 }

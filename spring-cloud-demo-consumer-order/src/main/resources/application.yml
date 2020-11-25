@@ -12,3 +12,12 @@ spring:
 logging:
   level:
     top.freshgeek.springcloud.order.feign.PaymentService: debug
+
+ribbon:
+  #请求处理的超时时间
+  ReadTimeout: 5000
+
+# feign 的hystrix 支持开启 默认是关闭
+feign:
+  hystrix:
+    enabled: true

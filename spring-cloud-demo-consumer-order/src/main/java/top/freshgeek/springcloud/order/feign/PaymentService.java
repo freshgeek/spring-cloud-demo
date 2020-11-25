@@ -2,16 +2,18 @@ package top.freshgeek.springcloud.order.feign;
 
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import top.freshgeek.springcloud.common.payment.CommonResult;
 import top.freshgeek.springcloud.entity.payment.Payment;
 import top.freshgeek.springcloud.order.controller.OrderOpenFeignController;
+import top.freshgeek.springcloud.order.feign.fallback.FallbackPaymentService;
 
 /**
  * @author chen.chao
  */
-@RestController("/payment")
-@FeignClient(value = OrderOpenFeignController.PAY_SERVICE)
+@Component
+@FeignClient(value = OrderOpenFeignController.PAY_SERVICE, fallback = FallbackPaymentService.class)
 public interface PaymentService {
 
 	@PostMapping("/payment/create")
@@ -21,8 +23,8 @@ public interface PaymentService {
 	CommonResult getById(@PathVariable("id") long id);
 
 	@GetMapping("/payment/pay")
-	CommonResult histrixPay();
+	CommonResult hystrixPay();
 
 	@GetMapping("/payment/pay-timeout")
-	CommonResult histrixPayTimeout();
+	CommonResult hystrixPayTimeout();
 }
