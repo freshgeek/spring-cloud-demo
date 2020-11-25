@@ -12,6 +12,8 @@
         <module>spring-cloud-demo-consumer-order</module>
         <module>spring-cloud-demo-common</module>
         <module>spring-cloud-demo-eureka-server</module>
+        <module>spring-cloud-demo-eureka-server</module>
+        <module>spring-cloud-demo-hystrix-dashboard</module>
     </modules>
     <packaging>pom</packaging>
     <description>this is a project of spring cloud with atguigu</description>
