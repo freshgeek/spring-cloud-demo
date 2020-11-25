@@ -21,36 +21,46 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/payment/")
 @RestController
-public class PaymentController   {
+public class PaymentController {
 
-    @Autowired
-    private PaymentService paymentService;
+	@Autowired
+	private PaymentService paymentService;
 
-    @Autowired(required = false)
-    private DiscoveryClient discoveryClient;
+	@Autowired(required = false)
+	private DiscoveryClient discoveryClient;
 
-    @PostMapping("/create")
-    public CommonResult create(@RequestBody Payment payment) {
-        return paymentService.save(payment);
-    }
+	@PostMapping("/create")
+	public CommonResult create(@RequestBody Payment payment) {
+		return paymentService.save(payment);
+	}
 
-    @GetMapping("/get/{id}")
-    public CommonResult getById(@PathVariable("id") long id) {
-        return paymentService.get(id);
-    }
+	@GetMapping("/get/{id}")
+	public CommonResult getById(@PathVariable("id") long id) {
+		return paymentService.get(id);
+	}
 
-    @GetMapping("discovery")
-    public Object getDiscovery(){
-        List<String> services = discoveryClient.getServices();
-        services.forEach(log::info);
-        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
-        instances.forEach(s->log.info("{}",s.toString()));
-        return discoveryClient;
-    }
+	@GetMapping("discovery")
+	public Object getDiscovery() {
+		List<String> services = discoveryClient.getServices();
+		services.forEach(log::info);
+		List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+		instances.forEach(s -> log.info("{}", s.toString()));
+		return discoveryClient;
+	}
 
-    @GetMapping("zk")
-    public Object zk(){
-        return "zookeeper success ! ";
-    }
+	@GetMapping("zk")
+	public Object zk() {
+		return "zookeeper success ! ";
+	}
 
+
+	@GetMapping("pay")
+	public CommonResult histrixPay() {
+		return paymentService.histrix_pay();
+	}
+
+	@GetMapping("pay-timeout")
+	public CommonResult histrixPayTimeout() {
+		return paymentService.histrix_pay_timeout();
+	}
 }

@@ -143,3 +143,50 @@ public class MyRuleConfig {
 ```
 
 
+
+## 带hystrix 熔断service
+
+首先加入hystrix 依赖
+
+```xml
+        <!-- hystrix-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+        </dependency>
+
+```
+
+然后在业务中写代码,演示正常的 和  超时或者报错 兜底方法 
+
+```java
+	public CommonResult histrix_pay() {
+		return CommonResult.of(200, "histrix_pay : " + serverPort);
+	}
+
+	@HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
+			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+	})
+	public CommonResult histrix_pay_timeout() {
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return CommonResult.of(200, "histrix_pay : " + serverPort);
+	}
+	public CommonResult fallbackMethod() {
+		return CommonResult.of(201, "fallbackMethod :" + serverPort);
+	}
+```
+
+其中
+> @HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
+>			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
+>	})
+
+表示 兜底方法  和 超时时间多少 
+
+
+最后在启动类上面加上注解 `@EnableCircuitBreaker` 即完成
+

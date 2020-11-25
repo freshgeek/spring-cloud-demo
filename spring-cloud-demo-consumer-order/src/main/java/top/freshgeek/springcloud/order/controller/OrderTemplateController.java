@@ -13,11 +13,14 @@ import javax.annotation.Resource;
  * @version 1.0
  * @date 2020/4/29 10:28
  * @description
+ *
+ * 使用rest template + ribbon 结合 使用
+ *
  */
 @Slf4j
 @RequestMapping("/consumer/")
 @RestController
-public class OrderController {
+public class OrderTemplateController {
 
 //    static final String PAYMENT = "http://localhost:8001";
     public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
