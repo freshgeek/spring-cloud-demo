@@ -64,3 +64,19 @@
 
 ### 3. 图形化界面
 
+
+
+
+## 服务网关
+
+- [zuul  netfix](https://github.com/Netflix/zuul) 过时，停更
+- zuul2 netfix 开发中
+- [gateway  spring开发 推荐](https://spring.io/projects/spring-cloud-gateway) 
+
+
+### gateway 
+
+该项目提供了一个在Spring生态系统之上构建的API网关，包括：Spring 5，Spring Boot 2和Project Reactor。Spring Cloud Gateway旨在提供一种简单而有效的方法来路由到API，并为它们提供跨领域的关注，例如：安全性，监视/指标和弹性。
+
+
+

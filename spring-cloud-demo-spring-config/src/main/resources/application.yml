@@ -1,0 +1,34 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name:  cloud-config-center #注册进Eureka服务器的微服务名
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/pocg/spring-cloud-demo.git #git仓库地址
+          search-paths:
+            - spring-cloud-config-repo
+      ####读取分支
+      label: master
+#rabbitmq相关配置
+#rabbitmq:
+#  host: localhost
+#  port: 5672
+#  username: guest
+#  password: guest
+
+#服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
+
+##rabbitmq相关配置,暴露bus刷新配置的端点
+#management:
+#  endpoints: #暴露bus刷新配置的端点
+#    web:
+#      exposure:
+#        include: 'bus-refresh'
