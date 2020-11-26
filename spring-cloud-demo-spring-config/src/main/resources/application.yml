@@ -25,7 +25,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
-
 ##rabbitmq相关配置,暴露bus刷新配置的端点
 #management:
 #  endpoints: #暴露bus刷新配置的端点

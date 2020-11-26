@@ -16,6 +16,7 @@
         <module>spring-cloud-demo-hystrix-dashboard</module>
         <module>spring-cloud-demo-gateway</module>
         <module>spring-cloud-demo-spring-config</module>
+        <module>spring-cloud-demo-spring-config-client</module>
     </modules>
     <packaging>pom</packaging>
     <description>this is a project of spring cloud with atguigu</description>
