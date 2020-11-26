@@ -34,3 +34,27 @@ https://blog.csdn.net/w_ya24k/article/details/79565269
 
 
 
+开始 配置rabbit mq  , 这里使用docker 
+
+```shell script
+# 拉取镜像
+docker pull rabbitmq:3.7.14-rc.1-management-alpine
+# 运行镜像
+docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:3.7.14-rc.1-management-alpine
+```
+
+然后可以通过IP:15672 端口 访问管理界面
+默认用户名/密码为:guest
+
+
+然后通过配置`spring.profiles.active` 配置多服务配置
+
+
+
+
+
+
+
+
+
+
