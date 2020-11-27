@@ -14,11 +14,11 @@ spring:
       ####读取分支
       label: master
 #rabbitmq相关配置
-rabbitmq:
-  host: local
-  port: 5672
-  username: guest
-  password: guest
+  rabbitmq:
+    host: local
+    port: 5672
+    username: guest
+    password: guest
 
 #服务注册到eureka地址
 eureka:

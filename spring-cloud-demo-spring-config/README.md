@@ -2,11 +2,17 @@
 
 # [spring cloud config 配置中心](https://cloud.spring.io/spring-cloud-config/reference/html/)
 
+## 约定
+- 3344 作为配置中心端口
+
+- 3355/3366 作为客户端端口去获取配置中心配置
+
 
 思想就是:
 
 1. 通过本项目配置中心通过约定规则去获取远程git服务器上的配置(当然 这里不限于git,也可以使用本地文件等方式)
 
+> 可以查看配置中心读取到的文件 `http://localhost:3344/master/config-dev.yml` 
 
 https://blog.csdn.net/w_ya24k/article/details/79565269
 
@@ -28,8 +34,10 @@ https://blog.csdn.net/w_ya24k/article/details/79565269
 解决办法:
 添加  @RefreshScope , 并且手动调用 客户端刷新地址
 
+`curl -X POST "http://localhost:3355/actuator/refresh"`
 
-同时这种方式太lb了 ,  改进方式 引入bus 消息总线(或者后面的nacos )
+
+有多少台就要调多少次,虽然可以用脚本做,但是这种方式太lb了 ,  改进方式 引入bus 消息总线(或者后面的nacos )
 
 
 
@@ -60,7 +68,7 @@ docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:
 
 ```yaml
 #rabbitmq相关配置
-rabbitmq:
+ rabbitmq:
   host: local
   port: 5672
   username: guest
@@ -102,9 +110,17 @@ management:
 
 此时可以测试,在git 上修改内容 配置中心与客户端同步刷新最新值
 
+> http://localhost:3355/configInfo
+> http://localhost:3366/configInfo
+
+刷新总线地址
+
+
 其中通知方式有两种:
-1. 全局通知 ``
-2. 定点通知 ``
+1. 全局通知 `curl -X POST "http://localhost:3344/actuator/bus-refresh"`
+2. 定点通知 `curl -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3355"`
+
+> 这里的规则是: `spring.application.name`:`port`
 
 > 可以在启动参数添加端口`-Dserver.port=3355/3366` , 都引用同一份yml , 测试全局和定点效果
 
