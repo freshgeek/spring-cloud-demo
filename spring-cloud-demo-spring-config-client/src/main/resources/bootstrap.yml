@@ -1,5 +1,5 @@
-#server:
-#  port: 3355
+server:
+  port: 3355
 
 spring:
   application:
@@ -18,11 +18,11 @@ spring:
       uri: http://localhost:3344
 
   #rabbitmq相关配置 15672是Web管理界面的端口；5672是MQ访问的端口
-#  rabbitmq:
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
+  rabbitmq:
+    host: local
+    port: 5672
+    username: guest
+    password: guest
 
 #服务注册到eureka地址
 eureka:
@@ -31,8 +31,8 @@ eureka:
       defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
 
 # 暴露监控端点
-#management:
-#  endpoints:
-#    web:
-#      exposure:
-#        include: "*"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
