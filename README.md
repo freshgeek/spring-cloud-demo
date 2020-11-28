@@ -257,5 +257,8 @@ public class OrderNacosController {
 nacos 支持CAP 理论中的 AP+CP 两者可以根据实际需求切换，不能同时支持
 
 
-## nacos 配置中心
+## [nacos 配置中心](./spring-cloud-demo-nacos-config/README.md) 
+
+
+
 
