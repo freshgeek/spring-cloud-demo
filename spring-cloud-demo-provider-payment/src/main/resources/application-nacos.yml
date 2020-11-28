@@ -1,9 +1,9 @@
 server:
-  port: 8001
+  port: 9001
 
 spring:
   application:
-    name: cloud-payment-service
+    name: nacos-payment-service
   datasource:
     # 当前数据源操作类型
     type: com.alibaba.druid.pool.DruidDataSource
@@ -22,12 +22,14 @@ spring:
     sampler:
       #采样率值介于 0 到 1 之间，1 则表示全部采集
       probability: 1
+  cloud:
+    nacos:
+      discovery:
+        #Nacos服务注册中心地址
+        server-addr: local:8848
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://eureka01:8761/eureka/
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

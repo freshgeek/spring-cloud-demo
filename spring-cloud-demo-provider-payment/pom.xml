@@ -11,6 +11,46 @@
 
     <artifactId>spring-cloud-demo-provider-payment</artifactId>
     <dependencies>
+        <!--微服务nacos 服务发现 选一 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--微服务nacos 选一 -->
+
+        <!--eureka 注册中心   选一-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+        <!--        </dependency>-->
+        <!--eureka 注册中心   选一-->
+
+
+        <!--zookeeper 作为 注册中心 选一 -->
+        <!--    <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.zookeeper</groupId>
+                        <artifactId>zookeeper</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>3.4.6</version>
+            </dependency>-->
+        <!--zookeeper 作为 注册中心 选一 -->
+
+        <!--SpringCloud consul-server-->
+        <!--   <dependency>
+               <groupId>org.springframework.cloud</groupId>
+               <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+           </dependency>-->
+        <!--SpringCloud consul-server-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -65,40 +105,6 @@
             <artifactId>spring-cloud-demo-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--eureka 注册中心   选一-->
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <!--eureka 注册中心   选一-->
-
-
-        <!--zookeeper 作为 注册中心 选一 -->
-    <!--    <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.zookeeper</groupId>
-                    <artifactId>zookeeper</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.4.6</version>
-        </dependency>-->
-        <!--zookeeper 作为 注册中心 选一 -->
-
-        <!--SpringCloud consul-server-->
-     <!--   <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-        </dependency>-->
-        <!--SpringCloud consul-server-->
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
