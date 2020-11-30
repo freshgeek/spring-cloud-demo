@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -18,11 +19,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @EnableSwagger2
 // 在eureka 环境下才加@EnableEurekaClient
-// @EnableEurekaClient
+ @EnableEurekaClient
 // zookeeper 单独用这个即可 @EnableDiscoveryClient
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 // hystrix 使用 @EnableCircuitBreaker
-@EnableCircuitBreaker
+//@EnableCircuitBreaker
 @SpringBootApplication
 @EntityScan("top.freshgeek.springcloud.entity")
 public class ProviderPaymentApplication {

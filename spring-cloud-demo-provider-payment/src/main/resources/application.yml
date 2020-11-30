@@ -12,21 +12,25 @@ spring:
     url: jdbc:mysql://data.keepon.site:3306/springcloud-payment?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
     username: springcloud
     password: springcloud
+    # 这里用了jpa 省得写dao了
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-  zipkin:
-    base-url: http://local:9411
-  sleuth:
-    sampler:
-      #采样率值介于 0 到 1 之间，1 则表示全部采集
-      probability: 1
+#  zipkin:
+#    base-url: http://local:9411
+#  sleuth:
+#    sampler:
+#      #采样率值介于 0 到 1 之间，1 则表示全部采集
+#      probability: 1
 
 eureka:
   client:
+    # 注册进eureka
     register-with-eureka: true
+    # 要不要去注册中心获取其他服务的地址
     fetch-registry: true
+    # 这里需要配置一下eureka 服务器的 host域名
     service-url:
       defaultZone: http://eureka01:8761/eureka/
 

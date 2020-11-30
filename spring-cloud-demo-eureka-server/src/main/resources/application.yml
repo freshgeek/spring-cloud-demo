@@ -20,3 +20,10 @@ spring:
   freemarker:
     template-loader-path: classpath:/templates/
     prefer-file-system-access: false
+
+logging:
+  level:
+    com:
+      netflix:
+        eureka:
+          registry: warn
