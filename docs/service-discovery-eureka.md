@@ -1,7 +1,46 @@
 
 # Eureka 服务 
 
-## Eureka server
+## CAP
+
+CAP原则又称CAP定理，指的是在一个分布式系统中，一致性（Consistency）、可用性（Availability）、分区容错性（Partition tolerance）。CAP 原则指的是，这三个要素最多只能同时实现两点，不可能三者兼顾。
+
+Eureka 是基于AP 的服务注册发现
+
+## Eureka 自我保护机制
+
+首先对Eureka注册中心需要了解的是Eureka各个节点都是平等的，没有ZK中角色的概念， 即使N-1个节点挂掉也不会影响其他节点的正常运行。
+
+默认情况下，如果Eureka Server在一定时间内（默认90秒）没有接收到某个微服务实例的心跳，Eureka Server将会移除该实例。但是当网络分区故障发生时，微服务与Eureka Server之间无法正常通信，而微服务本身是正常运行的，此时不应该移除这个微服务，所以引入了自我保护机制。
+
+- 官方对于自我保护机制的定义：
+
+自我保护模式正是一种针对网络异常波动的安全保护措施，使用自我保护模式能使Eureka集群更加的健壮、稳定的运行。
+
+- 自我保护机制的工作机制是：
+
+如果在15分钟内超过85%的客户端节点都没有正常的心跳，那么Eureka就认为客户端与注册中心出现了网络故障，Eureka Server自动进入自我保护机制，此时会出现以下几种情况：
+
+Eureka Server不再从注册列表中移除因为长时间没收到心跳而应该过期的服务。
+
+Eureka Server仍然能够接受新服务的注册和查询请求，但是不会被同步到其它节点上，保证当前节点依然可用。
+
+当网络稳定时，当前Eureka Server新的注册信息会被同步到其它节点中。
+
+因此Eureka Server可以很好的应对因网络故障导致部分节点失联的情况，而不会像ZK那样如果有一半不可用的情况会导致整个集群不可用而变成瘫痪。
+
+> 因此也很有可能出现 服务故障缺没有移除的情况
+>
+
+- 自我保护开关
+
+Eureka自我保护机制，通过配置 eureka.server.enable-self-preservation 来true打开/false禁用自我保护机制，默认打开状态，建议生产环境打开此配置。
+eviction-interval-timer-in-ms: 设定检测周期
+
+
+
+## Eureka server 单机版
+
  `spring-cloud-demo-eureka-server` 工程提供 eureka server ，分三步
 
 ### 1. 引入pom文件
@@ -106,6 +145,7 @@ public class EurekaServerApplication {
 
 ```
 
+### 启动日志
 
 最后就可以启动了，可以在控制台看到很多日志打印，如下：
 
@@ -126,7 +166,7 @@ logging:
           registry: warn
 ```
 
-## Eureka 微服务的消费者生产者配置使用
+## Eureka 服务方-调用方 配置使用
 
 那么单机服务就搭建成功了，启动微服务的消费者-生产者测试：
 - spring-cloud-demo-provider-payment （提供支付服务，生产者）
@@ -152,7 +192,7 @@ logging:
 
 
 
-### 2. 修改applicationyml
+### 2. 修改application.yml
 
 - spring-cloud-demo-provider-payment 生产者
 
@@ -374,5 +414,80 @@ public class OrderTemplateController {
 ```
 
 
-这样我们就完成了微服务的注册和发现了
+这样我们就完成了微服务的注册和发现了,可以测试调用
+
+## Eureka 集群
+
+作为微服务，如果是单体server，那肯定不行，必须上集群。
+
+Eureka 集群 是把每一台节点作为服务提供者注册进其他eureka server 实例中，如相互守望：
+
+Eureka Server 集群配置引入服务提供者和生产者，pom不用变，只是需要修改eureka server 多启动几个实例即可，同时在服务注册和调用方配置多个eureka地址即可
+
+
+### 第一步：复制多端口 eureka 配置文件
+
+复制多份application.yml ， 这里复制两个：
+- `application-cluster-01.yml`
+- `application-cluster-02.yml`
+
+application-cluster-01.yml
+```yaml
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka01
+  client:
+    # 不注册自己
+    register-with-eureka: true
+    # 维护 不检索
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka02:8762/eureka/
+```
+application-cluster-02.yml
+```yaml
+server:
+  port: 8762
+eureka:
+  instance:
+    hostname: eureka02
+  client:
+    # 不注册自己
+    register-with-eureka: true
+    # 维护 不检索
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka01:8761/eureka/
+
+```
+
+### 第二步：启动eureka集群
+
+因为是本机启动，所以端口和实例名没有重复，
+
+启动动时指定在idea 的 config中指定springboot 的active profile `cluster-01` `cluster-02` 即可
+
+![](img/config-run-profile.jpg)
+
+启动完成后可以访问(同样需要配置hosts)：
+- [http://eureka01:8761/](http://eureka01:8761/)
+![eureka01](img/eureka01-server.jpg)
+- [http://eureka02:8762/](http://eureka01:8761/)
+![eureka02](img/eureka02-server.jpg)
+
+达成相互守望效果（这里我启动了生产者，在下一步）
+
+### 第三步：配置启动微服务 生产者-消费者
+
+只需要在生产和消费者配置两个eureka 地址即可
+
+```yaml
+
+      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
+
+```
+
+然后再启动生产消费者，调用消费者接口，可以返回数据
 

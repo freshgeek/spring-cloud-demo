@@ -8,7 +8,7 @@
 本项目使用Idea,同时使用`-Dserver.port=` 添加虚拟机端口方式和指定配置环境`profile`方式替代复制多个模块方式演示不同环境/集群情况
 
 配置启动方式如图(后面不一一介绍)：
-![配置启动方式](../img/configure.jpg)
+![配置启动方式](img/configure.jpg)
 
 
 # [***文档路径***](https://pocg.gitee.io/spring-cloud-demo)

@@ -32,6 +32,7 @@ eureka:
     fetch-registry: true
     # 这里需要配置一下eureka 服务器的 host域名
     service-url:
-      defaultZone: http://eureka01:8761/eureka/
+#      defaultZone: http://eureka01:8761/eureka/
+      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
 
 
