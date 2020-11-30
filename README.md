@@ -8,16 +8,19 @@
 本项目使用Idea,同时使用`-Dserver.port=` 添加虚拟机端口方式和指定配置环境`profile`方式替代复制多个模块方式演示不同环境/集群情况
 
 配置启动方式如图(后面不一一介绍)：
-![配置启动方式](../img/configure.jpg)
+![配置启动方式](img/configure.jpg)
+
+
+[***文档路径***](https://pocg.gitee.io/spring-cloud-demo)
 
 
 ## 涉及微服务架构技术点:
 
-- [服务发现](service-discovery.md)
-    - [Eureka](service-discovery-eureka.md)
-    - [Zookeeper](service-discovery-zookeeper.md)
-    - [Consul](service-discovery-consul.md)
-    - [Nacos-discovery](service-discovery-nacos.md)
+- [服务发现](docs/service-discovery.md)
+    - [Eureka](docs/service-discovery-eureka.md)
+    - [Zookeeper](docs/service-discovery-zookeeper.md)
+    - [Consul](docs/service-discovery-consul.md)
+    - [Nacos-discovery](docs/service-discovery-nacos.md)
 - 服务负载均衡
     - Ribbon 
     - Loadbalancer
