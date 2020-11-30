@@ -7,5 +7,5 @@
 如有不妥欠缺之处,欢迎大家以Issue提出
 
 [Gitee](https://gitee.com/pocg/spring-cloud-demo)
-[Getting Started](service-discovery.md)
+[Getting Started](#service-discovery.md)
 

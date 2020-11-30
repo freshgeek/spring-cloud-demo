@@ -1,5 +1,5 @@
 
-- [服务发现](service-discovery.md)
+- [服务发现](./docs/service-discovery.md)
     - [Eureka](service-discovery-eureka.md)
     - [Zookeeper](service-discovery-zookeeper.md)
     - [Consul](service-discovery-consul.md)
