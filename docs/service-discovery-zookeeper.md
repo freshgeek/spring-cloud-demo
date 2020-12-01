@@ -1,14 +1,20 @@
 
 # zookeeper
 
-zookeeper使用首先需要搭建部署
+zookeeper遵循的是CP原则，即一致性和分区容错性，牺牲了可用性
 
-## zookeeper 安装
+当Leader宕机以后，集群机器马上会进去到新的Leader选举中，但是选举时长在30s — 120s之间，
+这个选取Leader期间，是不提供服务的，不满足可用性，所以牺牲了可用性
 
-这里使用docker-compose 安装zookeeper集群
 
-docker-compose.yml
+## 1. zookeeper 安装
 
+使用zookeeper 作为服务注册发现首先需要搭建zookeeper 
+
+这里使用docker-compose 安装zookeeper集群，以三个节点(2181,2182,2183)，在我的虚拟机`192.168.203.102` 作为示例：
+
+vim docker-compose.yml
+> [https://hub.docker.com/_/zookeeper](https://hub.docker.com/_/zookeeper) 
 ```yaml
 version: '3.1'
 
@@ -52,39 +58,41 @@ docker-compose -f -d docker-compose.yml up
 
 ![日志](img/zookeeper-console-log.jpg)
 
-> 注意这里的版本号 `3.6.2` ! 后面需要版本号一致
+> 注意这里的版本号 `3.6.2` ! 后面需要版本号一致 
+> 同时如果与版本不一致出现问题，可以找官网查看变更
 
-## 修改pom 
+## 2. 修改  pom 
 
 微服务 生产-消费
 - spring-cloud-demo-provider-payment
 - spring-cloud-demo-consumer-order
 
-需要把其他的服务发现注册 注释掉 打开zookeeper 同时引入对应版本好的zoo keeper 客户端
+需要把其他的服务发现注册,如前面的eureka等注释掉，打开zookeeper同时引入对应版本号的zookeeper客户端
 
 ```xml
 
-        <!--zookeeper 作为 注册中心-->
-         <dependency>
-                      <groupId>org.springframework.cloud</groupId>
-                      <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-                      <exclusions>
-                          <exclusion>
-                              <groupId>org.apache.zookeeper</groupId>
-                              <artifactId>zookeeper</artifactId>
-                          </exclusion>
-                      </exclusions>
-                  </dependency>
-                  <dependency>
-                      <groupId>org.apache.zookeeper</groupId>
-                      <artifactId>zookeeper</artifactId>
-                      <version>3.4.6</version>
-                  </dependency>
+<!--zookeeper 作为 注册中心-->
+<dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+      <exclusions>
+          <exclusion>
+              <groupId>org.apache.zookeeper</groupId>
+              <artifactId>zookeeper</artifactId>
+          </exclusion>
+      </exclusions>
+  </dependency>
+  <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <version>3.4.6</version>
+  </dependency>
 
 ```
-### 2. 修改yml文件
+## 3. 修改yml文件
 
 微服务生产者
+
 - spring-cloud-demo-provider-payment
 
 application-zookeeper.yml
@@ -132,7 +140,7 @@ spring:
 ```
 
 
-### 3. 添加注解
+## 3. 添加注解
 1. 只需要在消费者-生产者的启动类上添加注解 `@EnableDiscoveryClient` 表明使用服务发现客户端即可启动
 2. 设定profile zookeeper 启动支付和订单服务 
 
