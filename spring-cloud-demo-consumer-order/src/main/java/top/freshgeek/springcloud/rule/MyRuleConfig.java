@@ -13,17 +13,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyRuleConfig {
 
-    @Bean
-    public IRule rule() {
-        // 默认
-        RoundRobinRule roundRobinRule = new RoundRobinRule();
-        RandomRule randomRule = new RandomRule();
-        RetryRule retryRule = new RetryRule();
-        WeightedResponseTimeRule weightedResponseTimeRule = new WeightedResponseTimeRule();
-        BestAvailableRule bestAvailableRule = new BestAvailableRule();
-        AvailabilityFilteringRule availabilityFilteringRule = new AvailabilityFilteringRule();
-        ZoneAvoidanceRule zoneAvoidanceRule = new ZoneAvoidanceRule();
-        return new AvailabilityFilteringRule();
-    }
+	@Bean
+	public IRule rule() {
+		// 默认
+		RoundRobinRule roundRobinRule = new RoundRobinRule();
+		RandomRule randomRule = new RandomRule();
+		RetryRule retryRule = new RetryRule();
+		WeightedResponseTimeRule weightedResponseTimeRule = new WeightedResponseTimeRule();
+		BestAvailableRule bestAvailableRule = new BestAvailableRule();
+		AvailabilityFilteringRule availabilityFilteringRule = new AvailabilityFilteringRule();
+		ZoneAvoidanceRule zoneAvoidanceRule = new ZoneAvoidanceRule();
+		return randomRule;
+	}
 
 }

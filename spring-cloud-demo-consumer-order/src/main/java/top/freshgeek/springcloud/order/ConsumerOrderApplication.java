@@ -4,8 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import top.freshgeek.springcloud.order.controller.OrderTemplateController;
+import top.freshgeek.springcloud.rule.MyRuleConfig;
 
 /**
  * @author chen.chao
@@ -18,7 +21,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // eureka
 //@EnableEurekaClient
 // ribbon 使用
-//@RibbonClient(name = OrderTemplateController.PAY_SERVICE,configuration = MyRuleConfig.class)
 // openfeign 调用
 //@EnableFeignClients
 //@EnableHystrix
