@@ -11,7 +11,7 @@
 
 服务实例的数量会发生动态变化。例如，EC自动伸缩组会根据负载情况随时调整实例数量。
 
-![](https://img-blog.csdn.net/20160419111629615)
+![](img/eureka-discovery.jpg)
 
 
 ## 2. 解决方案 Eureka
@@ -27,10 +27,28 @@
 - 维护服务实例信息集合
 - 集群之间信息同步
 
-![](https://img2018.cnblogs.com/blog/416838/201912/416838-20191231174818346-855663706.png)
+![](img/eureka-cluster.png)
 
 > 附上讲解博客[https://www.cnblogs.com/roytian/p/12125478.html#_lab2_0_0](https://www.cnblogs.com/roytian/p/12125478.html#_lab2_0_0)
 
 > [实际演示代码讲解>](service-discovery-eureka.md)
 
-### 2.2 
+### 2.2 zookeeper
+
+Zookeeper最早起源于雅虎研究院的一个研究小组。
+
+在当时，研究人员发现，在雅虎内部很多大型系统基本都需要依赖一个类似的系统来进行分布式协调，
+但是这些系统往往都存在分布式单点问题。
+
+所以，雅虎的开发人员就试图开发一个通用的无单点问题的分布式协调框架，
+以便让开发人员将精力集中在处理业务逻辑上。
+
+ZooKeeper 是一个典型的分布式数据一致性解决方案，分布式应用程序可以基于 ZooKeeper 实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。
+
+ > 附上详解参考[https://www.jianshu.com/p/3e35437d0a88](https://www.jianshu.com/p/3e35437d0a88)
+>
+
+> [实际演示代码讲解>](service-discovery-zookeeper.md)
+
+### 2.3 consul
+

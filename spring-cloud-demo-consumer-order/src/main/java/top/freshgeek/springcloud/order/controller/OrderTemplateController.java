@@ -23,10 +23,10 @@ import javax.annotation.Resource;
 public class OrderTemplateController {
 
 //    static final String PAYMENT = "http://localhost:8001";
-    public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
-    static final String PAYMENT = "http://"+PAY_SERVICE;
+//    public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
+//    static final String PAYMENT = "http://"+PAY_SERVICE;
     // zk 的是小写
-//    static final String PAYMENT = "http://cloud-payment-service";
+    static final String PAYMENT = "http://cloud-payment-service";
 
     @Resource
     private RestTemplate restTemplate;

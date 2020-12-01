@@ -5,47 +5,6 @@
 
 
 
-```xml
-
-        <!--zookeeper 作为 注册中心-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-        </dependency>
-
-```
-
-```yaml
-
-server:
-  port: 8004
-
-spring:
-  application:
-    name: cloud-payment-service
-  datasource:
-    # 当前数据源操作类型
-    type: com.alibaba.druid.pool.DruidDataSource
-    # mysql驱动类
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.35.3:3306/springcloud-payment?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: root
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-# 单个就配置单独一个即可
-  cloud:
-    zookeeper:
-      connect-string: localhost:2181,localhost:2182,localhost:2183
-
-
-
-```
-
-** 服务端则一样 换下注解**
-
 ## 使用consul 替换 
 
 首先,安装,采用docker
