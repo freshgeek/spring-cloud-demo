@@ -61,7 +61,7 @@ public class HystrixDashboardApplication {
 然后在配置类中指定好端口 就可以启动了 
 
 启动之后访问 IP 端口/hystrix  就可以看到图表
-![](../img/hystrix-dashboard.jpg)
+![](../docs/img/hystrix-dashboard.jpg)
 
 注意:
 
@@ -89,7 +89,7 @@ public class HystrixDashboardApplication {
 
 然后启动 eureka 和 服务端 ,在路径中输入对应服务端的IP端口路径,如下:
 
-![输入](../img/hystrix-dashboard-input.jpg)
+![输入](../docs/img/hystrix-dashboard-input.jpg)
 
 
 这里好像只能监控一个输入一个,感觉交互和监控功能上都稍微有点欠缺

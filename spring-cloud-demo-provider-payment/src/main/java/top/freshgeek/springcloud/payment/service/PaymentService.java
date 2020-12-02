@@ -56,6 +56,7 @@ public class PaymentService {
 	})
 	public CommonResult hystrix_pay_timeout() {
 		try {
+			int i = 10 / 0;
 			TimeUnit.SECONDS.sleep(3);
 		} catch (InterruptedException e) {
 			e.printStackTrace();

@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * @description
  */
 @Slf4j
-//@DefaultProperties(defaultFallback = "globalFallBackTimeOut")
+@DefaultProperties(defaultFallback = "globalFallBackTimeOut")
 @RestController
 @RequestMapping("/feign/")
 public class OrderOpenFeignController {
@@ -50,7 +50,7 @@ public class OrderOpenFeignController {
 //	@HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
 //			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
 //	})
-//	@HystrixCommand
+	@HystrixCommand
 	CommonResult hystrixPayTimeout() {
 		return paymentService.hystrixPayTimeout();
 	}

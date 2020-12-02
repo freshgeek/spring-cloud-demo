@@ -1,0 +1,33 @@
+server:
+  port: 9002
+
+turbine:
+  #appConfig 配置Eureka中的serviceId列表，表明监控哪些服务，多个服务id用 ， 逗号隔开
+  app-config: cloud-payment-service
+  aggregator:
+    cluster-config: default
+  cluster-name-expression: new String("default")
+
+spring:
+  cloud:
+    consul:
+      host: 192.168.203.102
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        # 心跳检测默认是关，需要打开
+        heartbeat:
+          enabled: true
+  application:
+    name: hystrix-dashboard-turbine
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
+  instance:
+    hostname: payment8001
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2

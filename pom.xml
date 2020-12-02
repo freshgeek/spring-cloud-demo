@@ -20,6 +20,7 @@
         <module>spring-cloud-demo-stream-rabbitmq-provider</module>
         <module>spring-cloud-demo-stream-rabbitmq-consumer</module>
         <module>spring-cloud-demo-nacos-config</module>
+        <module>spring-cloud-demo-hystrix-dashboard-turbine</module>
     </modules>
     <packaging>pom</packaging>
     <description>this is a project of spring cloud with atguigu</description>
