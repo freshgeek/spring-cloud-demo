@@ -20,11 +20,11 @@ CAP 不可能都取，只能取其中2个原因是 ：
 
 ## 注册服务发现对比
 
-|Nacos | Eureka | Consul | CoreDNS | Zookeeper|
-| :---: | :---: | :---: | :---: | :---: |
-|一致性协议 | CP+AP | AP | CP | 无 | CP |
-|健康检查 | TCP HTTP MYSQL Client Beat | Client Beat | TCP HTTP gRPC Cmd | 无  | Keep Alive |
-|负载均衡策略 | 权重 metadata Selector | Ribbon | Fabio | RoundRobin | 无 |
+| | Nacos | Eureka | Consul | CoreDNS | Zookeeper |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|一致性协议 | CP+AP | AP | CP | 	— | CP |
+|健康检查 | TCP/HTTP/MYSQL/Client Beat | Client Beat | TCP/HTTP/gRPC/Cmd | 	— | Keep Alive |
+|负载均衡策略 | 权重/metadata/Selector | Ribbon | Fabio | RoundRobin | 	—  |
 |雪崩保护 | 有 | 有 | 无 | 无 | 无 |
 |自动注销实例 | 支持 | 支持 | 支持 | 不支持 | 支持 |
 |访问协议 | HTTP/DNS | HTTP | HTTP/DNS | DNS | TCP |
