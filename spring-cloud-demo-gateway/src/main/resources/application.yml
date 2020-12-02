@@ -5,6 +5,14 @@ spring:
   application:
     name: cloud-gateway-service
   cloud:
+    consul:
+      host: 192.168.203.102
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        # 心跳检测默认是关，需要打开
+        heartbeat:
+          enabled: true
     gateway:
       discovery:
         locator:
@@ -26,7 +34,7 @@ spring:
             #- Header=X-Request-Id, \d+  # 请求头要有X-Request-Id属性并且值为整数的正则表达式
 eureka:
   instance:
-    hostname: gateway9527
+    hostname: ${spring.application.name}
   client: #服务提供者provider注册进eureka服务列表内
     service-url:
       register-with-eureka: true
