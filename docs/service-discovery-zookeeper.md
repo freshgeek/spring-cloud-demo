@@ -146,14 +146,18 @@ spring:
 ```
 
 
-## 3. 添加注解
+## 4. 添加注解
 1. 只需要在消费者-生产者的启动类上添加注解 `@EnableDiscoveryClient` 表明使用服务发现客户端即可启动
 2. 设定profile zookeeper 启动支付和订单服务 
 
 > 需要注意的是，在zookeeper中服务名都是小写的 所以如果用Eureka的大写的服务名会报错找不到
 
 
-### 4. 测试访问
+### 5. 测试访问
+访问客户端调用服务端接口
 
-'http://localhost/consumer/payment/get/1' 
+http://localhost/consumer/payment/get/1
 
+或者通过
+
+swagger-ui http://localhost/swagger-ui.html  调试 

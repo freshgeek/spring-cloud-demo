@@ -17,7 +17,7 @@
 
 首先安装consul ， 这里使用docker 安装
 
-> 注意的是需要把地址绑定换成当前虚拟机的IP
+> 注意的是需要把 ***-bind=*** 地址绑定换成当前虚拟机的IP 
 
 ```shell script
 docker run -d --net=host --name consul -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}' consul:1.6.1 agent -server -bind=192.168.203.102 -bootstrap-expect=1 -ui -client=0.0.0.0
@@ -44,6 +44,7 @@ docker run -d --net=host --name consul -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_i
 ## 3. 改配置yml
 
 - spring-cloud-demo-provider-payment
+
 application-consul.yml
 
 ```yaml
@@ -78,6 +79,7 @@ spring:
 ```
 
 - spring-cloud-demo-consumer-order
+
 application-consul.yml
 
 ```yaml
@@ -98,7 +100,13 @@ spring:
           enabled: true
 ```
 
-## 4. 注解类
-同样加上 `@EnableDiscoveryClient` 注解即可，添加配置profile `consul`
+## 4. 启动类注解
 
-启动完成之后 可以访问 'http://localhost/consumer/payment/get/1' 测试
+1. 同样在启动类加上 `@EnableDiscoveryClient` 注解即可
+
+2. 添加配置profile `consul` 配置 启动 服务端+客户端
+
+3. 启动完成之后 可以访问 http://localhost/consumer/payment/get/1 或 http://localhost/swagger-ui.html 测试完成客户端访问服务端
+
+
+

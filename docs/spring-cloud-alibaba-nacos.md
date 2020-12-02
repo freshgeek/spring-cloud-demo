@@ -1,4 +1,11 @@
 
+### 2.4 nacos
+
+（Nacos）Dynamic Naming and Configuration Service 动态命名和配置服务 
+
+Nacos = Eureka+Config+Bus 注册中心与配置中心的组合
+
+ 
 ## nacos=eureka+config+bus
 一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。
 

@@ -238,20 +238,25 @@ com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netfli
 因此我们改下 spring-cloud-demo-provider-payment ，把自己降级变成5秒兜底 ， 基本情况下不会自己出错了 ，
  然后加入一个异常
 
-> 			int i = 10 / 0;
+> int i = 10 / 0;
 
 接着开始改造客户端 spring-cloud-demo-consumer-order
 
 1. 加入hystrix pom
+
 ```xml
    <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
 ```
+
 2. 开启注解 @EnableHystrix
+
 3. 编写业务类
+
 ```java
+
 package top.freshgeek.springcloud.order.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
@@ -314,6 +319,7 @@ public class OrderOpenFeignController {
 
 ```
 
+
 >这里我省略了加 open feign 方法步骤 ， 正常情况先加了才能调用
 
 与上面套路一致，加入了两个注解然后自己写一个超时方法自己兜底
@@ -324,9 +330,11 @@ public class OrderOpenFeignController {
 思考一下：如果每个方法都需要这样，那么和业务方法耦合太严重了，且每一个微服务方法都需要加兜底太麻烦
 
 ### 2.3.1 全局异常兜底
+
 兜底方法太多，就引入了全局兜底方法，使用方法如下：
 
 1. 引入注解 @DefaultProperties
+
 ```java
 package top.freshgeek.springcloud.order.controller;
 

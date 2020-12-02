@@ -66,13 +66,3 @@ https://www.consul.io/intro Consul是一种服务网格解决方案，提供具�
 >
 >
 
-### 2.4 nacos
-
-（Nacos）Dynamic Naming and Configuration Service 动态命名和配置服务 
-
-Nacos = Eureka+Config+Bus 注册中心与配置中心的组合
-
-
-
-## 3.对比总结 
-
