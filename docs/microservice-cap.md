@@ -18,11 +18,11 @@ CAP 不可能都取，只能取其中2个原因是 ：
 - 如果A是第一需求，那么只要有一个服务在，就能正常接受请求，但是对与返回结果变不能保证，原因是，在分布式部署的时候，数据一致的过程不可能想切线路那么快。
 - 再如果，同事满足一致性和可用性，那么分区容错就很难保证了，也就是单点，也是分布式的基本核心，好了，明白这些理论，就可以在相应的场景选取服务注册与发现了
 
-## 注册服务发现对比
+## 注册服务发现对比(2020-12-02)
 
 | | Nacos | Eureka | Consul | CoreDNS | Zookeeper |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-|一致性协议 | CP+AP | AP | CP | 	— | CP |
+|一致性协议 | CP/AP | AP | CP | 	— | CP |
 |健康检查 | TCP/HTTP/MYSQL/Client Beat | Client Beat | TCP/HTTP/gRPC/Cmd | 	— | Keep Alive |
 |负载均衡策略 | 权重/metadata/Selector | Ribbon | Fabio | RoundRobin | 	—  |
 |雪崩保护 | 有 | 有 | 无 | 无 | 无 |
