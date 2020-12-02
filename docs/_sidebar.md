@@ -5,13 +5,12 @@
     - [Zookeeper](service-discovery-zookeeper.md)
     - [Consul](service-discovery-consul.md)
 - 服务负载均衡 
-    - Ribbon ()
+    - [Ribbon](ribbon.md)
 - 服务调用 
-    - Feign 
-    - Open Feign 
+    - ~~Feign (OpenFeign 前生)~~ 
+    - [Open Feign ](open-feign.md)
 - 服务降级熔断限流 
     - Hystrix 
-    - Sentienl 
 - 服务网关 
     - Zuul 
     - Gateway 
@@ -19,7 +18,6 @@
     - Spring Config 
 - 服务总线 
     - Bus 
-    - Nacos 
 - 消息驱动Stream 
     - Spring Cloud Stream 
 - 链路追踪 

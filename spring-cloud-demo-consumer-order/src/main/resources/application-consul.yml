@@ -13,3 +13,4 @@ spring:
         # 心跳检测默认是关，需要打开
         heartbeat:
           enabled: true
+

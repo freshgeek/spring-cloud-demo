@@ -164,3 +164,51 @@ public interface IRule {
 
 ```
 
+
+## 6. 配置参数
+
+### 6.1 超时时间
+
+通过设定超时时间
+
+```yaml
+# 请求连接的超时时间
+ribbon.ConnectTimeout=2000
+# 请求处理的超时时间
+ribbon.ReadTimeout=5000
+
+# 也可以为每个Ribbon客户端设置不同的超时时间, 通过服务名称进行指定：
+ribbon-config-demo.ribbon.ConnectTimeout=2000
+ribbon-config-demo.ribbon.ReadTimeout=5000
+
+```
+
+### 6.2 并发参数
+
+```yaml
+# 最大连接数
+ribbon.MaxTotalConnections=500
+# 每个host最大连接数
+ribbon.MaxConnectionsPerHost=500
+```
+
+### 6.3 重试机制
+
+在集群环境中，用多个节点来提供服务，难免会有某个节点出现故障。用 Nginx 做负载均衡的时候，如果你的应用是无状态的、可以滚动发布的，也就是需要一台台去重启应用，这样对用户的影响其实是比较小的，因为 Nginx 在转发请求失败后会重新将该请求转发到别的实例上去。
+
+由于 Eureka 是基于 AP 原则构建的，牺牲了数据的一致性，每个 Eureka 服务都会保存注册的服务信息，当注册的客户端与 Eureka 的心跳无法保持时，有可能是网络原因，也有可能是服务挂掉了。
+
+在这种情况下，Eureka 中还会在一段时间内保存注册信息。这个时候客户端就有可能拿到已经挂掉了的服务信息，故 Ribbon 就有可能拿到已经失效了的服务信息，这样就会导致发生失败的请求。
+
+这种问题我们可以利用重试机制来避免。重试机制就是当 Ribbon 发现请求的服务不可到达时，重新请求另外的服务。
+
+```yaml
+# 对当前实例的重试次数
+ribbon.maxAutoRetries=1
+# 切换实例的重试次数
+ribbon.maxAutoRetriesNextServer=3
+# 对所有操作请求都进行重试
+ribbon.okToRetryOnAllOperations=true
+# 对Http响应码进行重试
+ribbon.retryableStatusCodes=500,404,502
+```
