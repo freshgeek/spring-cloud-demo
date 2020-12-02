@@ -54,7 +54,9 @@ Spring Cloud添加了对Spring MVC注释的支持，并支持使用HttpMessageCo
 这里我们把这些feign 接口 都放在一个包下面，也可以抽取出公共方法直接引入
 
 - openfeign 接口
+
 ```java
+
 package top.freshgeek.springcloud.order.feign;
 
 
@@ -80,14 +82,18 @@ public interface PaymentService {
  
 }
 
+
 ```
+
 
 > 注意：需要带上注解，并且保持一致，否则可能出现序列化问题
 >
 
 - controller
 
+
 ```java
+
 package top.freshgeek.springcloud.order.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
@@ -134,7 +140,7 @@ public class OrderOpenFeignController {
 
 ```
 
-这样我们就能直接想本地方法一样调用了
+这样我们就能直接像本地方法一样调用了
 
 ### 3.4 测试
 1. 启动注册发现服务
@@ -159,7 +165,10 @@ feign.Logger.Level：
 - HEADERS：除了BASIC中定义的信息之外，还有请求和响应的头信息
 - FULL：除了HEADERS中定义的信息外，还有请求和响应的正文及元数据
 
+调整日志级别并且加入spring 中 
+
 ```java
+
 package top.freshgeek.springcloud.order.config;
 
 import feign.Logger;
@@ -183,10 +192,14 @@ public class FeignConfig {
 ### 5.2 配置文件属性
 
 然后指定Spring boot 对应的日志级别
+
 ```yaml
+
 logging:
   level:
     top.freshgeek.springcloud.order.feign: debug
+
 ```
 
+完成后，使用feign 访问接口就可以看到对应的日志记录打印
 
