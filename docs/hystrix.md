@@ -323,6 +323,7 @@ public class OrderOpenFeignController {
 >这里我省略了加 open feign 方法步骤 ， 正常情况先加了才能调用
 
 与上面套路一致，加入了两个注解然后自己写一个超时方法自己兜底
+
 4. 开启注册发现和服务端，客户端 测试调用这个报错方法，然后报错走兜底方法
 
 ## 2.3 耦合问题
@@ -493,6 +494,7 @@ public class FallbackPaymentService implements PaymentService {
 ```
 
 在feign 接口上表明兜底类，然后兜底类实现feign 接口 , 这样就完成了对兜底方法与业务方法解耦合，但是又引入了新的问题：
+
 1. 所有接口兜底方法都要自己实现一遍 
 
 是不是感觉回到了第一步，但是与第一步区别就是完成了解耦合
@@ -696,7 +698,7 @@ public class PaymentService {
 
 - 请求总数阈值：必须满足请求总阈值才有资格熔断。默认为20。意味着在10s内，如果命令调用次数不足20次，即使所有请求都超时或其他原因失败断路器都不会打开
 
- - 错误百分比阈值：在快照时间窗内请求总数超过阈值，且错误次数占总请求次数的比值大于阈值，断路器将会打开
+- 错误百分比阈值：在快照时间窗内请求总数超过阈值，且错误次数占总请求次数的比值大于阈值，断路器将会打开
 
 
 # 4 图形化界面 Dashboard
@@ -777,17 +779,21 @@ public class HystrixDashboardApplication {
 
 ![输入](img/hystrix-dashboard-input.jpg)
 
-可以看到对应的图表
+
+## 4.4 对应的图表 含义
 
 ![](img/hystrix-dashboard-detail.png)
+
 
 当然你可能看到 ：
 
 ![](img/hystrix-dashboard-error.jpg)
 
+
 那就要看下这个坑
 
-## 4.4 eureka+hystrix-dashboard 坑
+
+## 4.5 eureka+hystrix-dashboard 坑
 
 因为兼容性bug 需要在服务端 spring-cloud-demo-provider-payment 加入代码以适配
 
@@ -808,13 +814,14 @@ public class HystrixDashboardApplication {
 	}
 ```
 
-## 4.5 loading 状态 
+
+## 4.6 loading 状态 
 
 如果一直是loading 也没有报错 说明现在还没有服务，需要访问一下服务端的带有hystrix 的接口
 
 Hystrix DashBoard监控的服务都是要求有带上熔断端点的，即带上@HystrixCommand注解的方法，调用没有熔断端点的方法没法得到监控。
 
-## 4.6 集群负载均衡监控
+## 4.7 集群负载均衡监控
 我们不可能只监控一个实例，应该需要监控一个服务的全部实例 ， 所以这里需要引入
 Turbine，通过它来汇集监控信息，并将信息提供给Hystrix Dashboard来集中展示
 
@@ -823,7 +830,7 @@ Turbine，通过它来汇集监控信息，并将信息提供给Hystrix Dashboar
 因此需要搭建 spring-cloud-demo-hystrix-dashboard-turbine ， 通过`spring-cloud-demo-hystrix-dashboard-turbine`
 来聚合集群内的服务监控，统一输出到hystrix-dashboard
 
-### 4.6.1 引入pom
+### 4.7.1 引入pom
 
 
 > 因为电脑性能小 我就没去弄eureka 集群了 ， 还是沿用最后演示的consul 
@@ -857,7 +864,7 @@ Turbine，通过它来汇集监控信息，并将信息提供给Hystrix Dashboar
           </dependency>
 ```
 
-### 4.6.2 修改yml
+### 4.7.2 修改yml
 
 > 这里我两个都配了，选择其中一个注册发现即可
 >
@@ -896,7 +903,7 @@ eureka:
 
 ```
 
-### 4.6.3 主启动类
+### 4.7.3 主启动类
 
 @EnableTurbine
 @SpringCloudApplication
@@ -926,7 +933,7 @@ public class HystrixDashboardTurbineApplication {
 
 
 
-### 4.6.4  启动测试
+### 4.7.4  启动测试
 
 1. 启动注册发现服务
 2. 启动生产者
