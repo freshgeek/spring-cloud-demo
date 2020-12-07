@@ -12,10 +12,10 @@
 
     <dependencies>
         <!--微服务nacos 服务发现 选一 -->
-        <!--        <dependency>-->
-        <!--            <groupId>com.alibaba.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
         <!--eureka 注册中心   选一-->
         <!--                <dependency>-->
         <!--                    <groupId>org.springframework.cloud</groupId>-->
@@ -47,10 +47,10 @@
         <!--zookeeper 作为 注册中心 选一 -->
 
         <!--SpringCloud consul-server-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-consul-discovery</artifactId>-->
+        <!--        </dependency>-->
         <!--SpringCloud consul-server-->
 
         <dependency>

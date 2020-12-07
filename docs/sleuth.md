@@ -20,20 +20,23 @@ http://local:9411/zipkin/
 
 
 微服务跟踪(sleuth)其实是一个工具,它在整个分布式系统中能跟踪一个用户请求的过程(包括数据采集，数据传输，数据存储，数据分析，数据可视化)，捕获这些跟踪数据，就能构建微服务的整个调用链的视图，这是调试和监控微服务的关键工具。
-SpringCloudSleuth有4个特点或者功能:
+
+# SpringCloudSleuth功能特点
+
 1. 提供链路追踪	
 2. 性能分析	
 3. 数据分析,优化链路	
 4. 可视化
 
 # 实际编码
+
 这里举例:
 - spring-cloud-demo-provider-payment
 - spring-cloud-demo-consumer-order
 
 ## 1. 引入pom
 
-然后在微服务(需要记录的都要引入,其实可以放入公共模块)中引入pom
+在微服务(需要记录的都要引入,**可以考虑放入公共模块**)中引入pom
 
 ```xml
    <!--包含了sleuth+zipkin-->
@@ -46,7 +49,8 @@ SpringCloudSleuth有4个特点或者功能:
 
 ## 2. 修改yml
 
-然后配置微服务把请求数据发到zipkin
+配置微服务把请求数据发到zipkin
+
 ```yaml
 spring:
     # zipkin+sleuth 请求链路监控
@@ -70,6 +74,4 @@ spring:
 
 ![](img/zipkin-dashboard-filter-trace-id.jpg)
 可以看到该次请求的耗时:包括总用时,调用深度,调用哪个服务端,路径,服务端耗时
-
-
 
