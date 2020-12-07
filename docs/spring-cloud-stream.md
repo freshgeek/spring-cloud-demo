@@ -48,7 +48,26 @@ Spring Cloud Stream 相当于屏蔽了具体中间件的操作可以有效简化
 ![](img/stream-coding-flow.jpg)
 
 
-### 2.1 引入pom
+这边还是使用前面config+bus消息总线中使用的rabbitmq,附一下docker 搭建语句
+
+```shell script
+# 拉取镜像
+docker pull rabbitmq:3.7.14-rc.1-management-alpine
+# 运行镜像
+docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:3.7.14-rc.1-management-alpine
+```
+
+然后可以通过IP:15672 端口 访问管理界面 , 默认用户名/密码为:`guest`
+
+同时，这里创建两个工程：
+- spring-cloud-demo-stream-rabbitmq-provider 生产者
+- spring-cloud-demo-stream-rabbitmq-consumer 消费者
+
+
+### 2.1 生产者引入pom
+
+- spring-cloud-demo-stream-rabbitmq-provider
+
 ```xml
   <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,19 +105,6 @@ Spring Cloud Stream 相当于屏蔽了具体中间件的操作可以有效简化
 ```
 
 ### 2.2 yml
-
-这边还是使用前面config+bus消息总线中使用的rabbitmq 
-
-同样附一下docker 搭建语句
-
-```shell script
-# 拉取镜像
-docker pull rabbitmq:3.7.14-rc.1-management-alpine
-# 运行镜像
-docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:3.7.14-rc.1-management-alpine
-```
-
-然后可以通过IP:15672 端口 访问管理界面 , 默认用户名/密码为:`guest`
 
 
 ```yaml
@@ -171,8 +177,8 @@ public class StreamRabbitmqProviderApplication {
 ![常用api](img/stream-common-api.jpg)
 
 
-
 - 消息接口
+
 
 ```java
 
@@ -258,12 +264,11 @@ public class MessageController {
 然后启动eureka后启动 `spring-cloud-demo-stream-rabbitmq-provider` , 访问 `http://localhost:8801/send`
 
 
+## 消费者配置
 
-## 生产者 消费者结合
+- `spring-cloud-demo-stream-rabbitmq-consumer` 
 
-创建新的模块 `spring-cloud-demo-stream-rabbitmq-consumer` 消费者
-
-1. 同样相同的加入pom
+### 1. 同样相同的加入pom
 
 ```xml
     <dependency>
@@ -304,7 +309,7 @@ public class MessageController {
 ```
 
 
-2. 写入yml
+### 2. 写入yml
 
 ```yaml
 server:
@@ -346,7 +351,7 @@ eureka:
 ```
 
 
-3. 启动类
+### 3. 启动类
 
 
 ```java
@@ -372,7 +377,7 @@ public class StreamRabbitmqConsumerApplication {
 
 ```
 
-4. 加上监听器,监听消费消息
+### 4. 加上监听器,监听消费消息
 
 同时这里加了个端口,可以测试多个端口启动消费情况
 
@@ -406,7 +411,7 @@ public class ReceiveMessageListener {
 ```
 
 
-### 其他消费问题总结
+## 其他消费问题总结
 
 1. 重复消费问题
 
