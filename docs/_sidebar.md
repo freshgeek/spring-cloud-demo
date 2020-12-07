@@ -13,11 +13,10 @@
     - [Hystrix ](hystrix.md)
 - 服务网关 
     - ~~Zuul 过时了 性能不好~~ 
+    - ~~Zuul2 出了gateway~~
     - [Gateway ](gateway.md)
-- 服务配置 
-    - Spring Config 
-- 服务总线 
-    - Bus 
+- 服务配置+服务总线
+    - [Spring Config + Bus](spring-config.md) 
 - 消息驱动Stream 
     - Spring Cloud Stream 
 - 链路追踪 

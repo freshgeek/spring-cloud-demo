@@ -24,12 +24,6 @@ spring:
     username: guest
     password: guest
 
-#服务注册到eureka地址
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka01:8761/eureka/,http://eureka02:8762/eureka/
-
 # 暴露监控端点
 management:
   endpoints:
