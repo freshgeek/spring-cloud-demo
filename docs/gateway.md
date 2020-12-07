@@ -145,12 +145,80 @@ public class GatewayApplication {
 
 ### 1.4.1 配置文件方式
 
-1. 动态路由 
+> 这里推荐使用配置文件的方式去配置,因为后面我们可以结合配置中心做配置中心的动态配置
+> ,同时把配置能力下移,交由各个微服务提供者设定自己的限流访问规则
 
+
+```yaml
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
+      routes:
+        - id: payment_routh #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          #uri: http://localhost:8001          #匹配后提供服务的路由地址
+          uri: lb://cloud-payment-service #匹配后提供服务的路由地址
+          predicates:
+            - Path=/payment/get/**         # 断言，路径相匹配的进行路由
+        - id: payment_routh2 #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+          #uri: http://localhost:8001          #匹配后提供服务的路由地址
+          uri: lb://cloud-payment-service #匹配后提供服务的路由地址
+          predicates:
+            - Path=/payment/lb/**         # 断言，路径相匹配的进行路由
+            #- After=2020-12-01T15:51:37.485+08:00[Asia/Shanghai]
+            #- Cookie=username,zzyy
+            #- Header=X-Request-Id, \d+  # 请求头要有X-Request-Id属性并且值为整数的正则表达式
+```
 
 
 
 ### 1.4.2 编程式
 
+> 编程式的与配置文件方式也类似,把对应的路由和断言改成了对象而已
 
+```java
+package top.freshgeek.springcloud.gateway.config;
+
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author chen.chao
+ */
+@Configuration
+public class GatewayConfig {
+
+
+	@Bean
+	public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder) {
+		RouteLocatorBuilder.Builder routes = routeLocatorBuilder.routes();
+		// 对应
+		// spring.cloud.gateway.routes
+		// 一个id   一个path - 一个uri
+		routes.route("path_route_baidu", r -> r.path("/guonei")
+				.uri("http://news.baidu.com/guonei"))
+		;
+
+		return routes.build();
+	}
+}
+
+```
+
+## 1.5 测试
+
+直接访问网关 
+
+- http://localhost:9527/payment/get/2
+
+达成与访问 spring-cloud-demo-provider-payment 效果一致
 
