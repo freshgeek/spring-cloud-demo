@@ -17,7 +17,7 @@
 
 首先安装consul ， 这里使用docker 安装
 
-> 注意的是需要把 ***-bind=*** 地址绑定换成当前虚拟机的IP 
+> 注意的是需要把 **-bind=** 地址绑定换成当前虚拟机的IP 
 
 ```shell script
 docker run -d --net=host --name consul -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}' consul:1.6.1 agent -server -bind=192.168.203.102 -bootstrap-expect=1 -ui -client=0.0.0.0

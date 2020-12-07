@@ -14,11 +14,34 @@
 
 Spring Cloud Stream 为一些供应商的消息中间件产品提供了个性化的自动化配置实现，引用了发布-订阅、消费组、分区的三个核心概念。
 
-目前仅支持RabbitMQ、Kafka。
+目前`仅支持RabbitMQ、Kafka`。
 
 ## 1. 为啥使用这个 
 
+1、异步处理
 
+比如用户在电商网站下单，下单完成后会给用户推送短信或邮件，发短信和邮件的过程就可以异步完成。因为下单付款是核心业务，发邮件和短信并不属于核心功能，并且可能耗时较长，所以针对这种业务场景可以选择先放到消息队列中，有其他服务来异步处理。
+
+2、应用解耦：
+
+假设公司有几个不同的系统，各系统在某些业务有联动关系，比如 A 系统完成了某些操作，需要触发 B 系统及 C 系统。如果 A 系统完成操作，主动调用 B 系统的接口或 C 系统的接口，可以完成功能，但是各个系统之间就产生了耦合。用消息中间件就可以完成解耦，当 A 系统完成操作将数据放进消息队列，B 和 C 系统去订阅消息就可以了。这样各系统只要约定好消息的格式就好了。
+
+3、流量削峰
+
+比如秒杀活动，一下子进来好多请求，有的服务可能承受不住瞬时高并发而崩溃，所以针对这种瞬时高并发的场景，在中间加一层消息队列，把请求先入队列，然后再把队列中的请求平滑的推送给服务，或者让服务去队列拉取。
+
+4、日志处理
+
+kafka 最开始就是专门为了处理日志产生的。
+
+当碰到上面的几种情况的时候，就要考虑用消息队列了。
+如果你碰巧使用的是 RabbitMQ 或者 kafka，而且同样也是在使用 Spring Cloud ，那可以考虑下用 Spring Cloud Stream。
+
+
+Spring Cloud Stream 相当于屏蔽了具体中间件的操作可以有效简化开发人员对消息中间件的使用复杂度，让系统开发人员可以有更多的精力关注于核心业务逻辑的处理
+
+同时为一些供应商的消息中间件产品提供了个性化的自动化配置实现，并引入了发布-订阅、消费组、分区这三个核心概念。
+ 
 
 ## 2. 如何使用
 
@@ -64,15 +87,17 @@ Spring Cloud Stream 为一些供应商的消息中间件产品提供了个性化
 
 ### 2.2 yml
 
-这边还是使用前面config 消息总线种使用的rabbitmq 
+这边还是使用前面config+bus消息总线中使用的rabbitmq 
 
 同样附一下docker 搭建语句
+
 ```shell script
 # 拉取镜像
 docker pull rabbitmq:3.7.14-rc.1-management-alpine
 # 运行镜像
 docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:3.7.14-rc.1-management-alpine
 ```
+
 然后可以通过IP:15672 端口 访问管理界面 , 默认用户名/密码为:`guest`
 
 
@@ -116,6 +141,7 @@ eureka:
 ### 2.3 加注解
 
 微服务的基础注解
+
 ```java
 package top.freshgeek.springcloud.stream.provider;
 
@@ -142,11 +168,12 @@ public class StreamRabbitmqProviderApplication {
 
 这里附一下常用api
 
-![常用api](../docs/img/stream-common-api.jpg)
+![常用api](img/stream-common-api.jpg)
 
 
 
 - 消息接口
+
 ```java
 
 package top.freshgeek.springcloud.stream.provider.service;
@@ -165,6 +192,7 @@ public interface MessageProvider {
 - 实现类
 
 ```java
+
 package top.freshgeek.springcloud.stream.provider.service.impl;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -226,8 +254,6 @@ public class MessageController {
 }
 
 ```
-
-
 
 然后启动eureka后启动 `spring-cloud-demo-stream-rabbitmq-provider` , 访问 `http://localhost:8801/send`
 
