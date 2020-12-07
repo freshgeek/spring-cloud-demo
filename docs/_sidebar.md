@@ -18,10 +18,10 @@
 - 服务配置+服务总线
     - [Spring Config + Bus](spring-config.md) 
 - 消息驱动Stream 
-    - Spring Cloud Stream 
+    - [Spring Cloud Stream ](spring-cloud-stream.md)
 - 链路追踪 
-    - Sleuth + Zipkin 
+    - [Sleuth + Zipkin ](sleuth.md)
 - Alibaba系 技术栈 
-  - [Nacos:eureka+config+bus](service-discovery-nacos.md)
+  - [Nacos:eureka+config+bus](spring-cloud-alibaba-nacos.md)
   - [Sentinel:]()
   - [全局事务Seate]()

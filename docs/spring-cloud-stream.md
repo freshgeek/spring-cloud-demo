@@ -22,7 +22,7 @@ Spring Cloud Stream 为一些供应商的消息中间件产品提供了个性化
 
 ## 2. 如何使用
 
-![](../img/stream-coding-flow.jpg)
+![](img/stream-coding-flow.jpg)
 
 
 ### 2.1 引入pom
@@ -74,7 +74,7 @@ docker pull rabbitmq:3.7.14-rc.1-management-alpine
 docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:3.7.14-rc.1-management-alpine
 ```
 然后可以通过IP:15672 端口 访问管理界面 , 默认用户名/密码为:`guest`
- 
+
 
 ```yaml
 
@@ -119,7 +119,6 @@ eureka:
 ```java
 package top.freshgeek.springcloud.stream.provider;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -134,8 +133,8 @@ public class StreamRabbitmqProviderApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StreamRabbitmqProviderApplication.class, args);
 	}
-
 }
+
 
 ```
 
@@ -147,7 +146,7 @@ public class StreamRabbitmqProviderApplication {
 
 
 
-消息接口
+- 消息接口
 ```java
 
 package top.freshgeek.springcloud.stream.provider.service;
@@ -163,7 +162,7 @@ public interface MessageProvider {
 
 ```
 
-实现类
+- 实现类
 
 ```java
 package top.freshgeek.springcloud.stream.provider.service.impl;
@@ -197,7 +196,7 @@ public class MessageProviderImpl implements MessageProvider {
 
 ```
 
-最后加个controller 方便测试调用
+- 最后加个controller 方便测试调用
 
 ```java
 
@@ -230,13 +229,12 @@ public class MessageController {
 
 
 
-然后启动eureka后启动 `spring-cloud-demo-stream-rabbitmq-provider` 
-
-访问 `http://localhost:8801/send`
+然后启动eureka后启动 `spring-cloud-demo-stream-rabbitmq-provider` , 访问 `http://localhost:8801/send`
 
 
 
 ## 生产者 消费者结合
+
 创建新的模块 `spring-cloud-demo-stream-rabbitmq-consumer` 消费者
 
 1. 同样相同的加入pom

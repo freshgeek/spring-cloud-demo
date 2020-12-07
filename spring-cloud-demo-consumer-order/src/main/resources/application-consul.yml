@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: cloud-consumer-order
+  zipkin:
+    base-url: http://local:9411
+  sleuth:
+    sampler:
+      #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
   #### consul 注册中心  注解与zookeeper 一致
   cloud:
     consul:
