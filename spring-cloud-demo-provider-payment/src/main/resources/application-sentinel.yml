@@ -1,0 +1,27 @@
+
+spring:
+  zipkin:
+    base-url: http://local:9411
+  sleuth:
+    sampler:
+      #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
+  application:
+    name: cloud-payment-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: local:8848
+    sentinel:
+      transport:
+        # 刚才的sentinel 控制台地址
+        dashboard: local:8858
+        # 默认端口  假如被占用从8719开始+1扫描直到直到未被占用的端口
+        port: 8719
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 8401

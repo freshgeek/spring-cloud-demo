@@ -1,0 +1,228 @@
+
+# [sentinel](https://github.com/alibaba/Sentinel/wiki/%E4%BB%8B%E7%BB%8D)
+
+```shell script
+docker run --name sentinel -d \ 
+-p 8858:8858 \ 
+bladex/sentinel-dashboard
+```
+
+访问 `http://local:8858/#/dashboard` 
+![](img/sentinel-dashboard.jpg)
+
+
+对比 Hystrix 缺陷:
+1. 需要自己搭建监控平台,运行启动
+2. 没有web管理界面提供细粒度化的配置如:服务熔断,服务降级,服务限流
+
+可以看到 Hystrix 的关注点在于以隔离和熔断为主的容错机制，超时或被熔断的调用将会快速失败，并可以提供 fallback 机制。
+
+而 Sentinel 的侧重点在于：
+- 多样化的流量控制
+- 熔断降级
+- 系统负载保护
+- 实时监控和控制台
+
+# Sentinel 特性
+
+
+# 1. 编码
+
+
+使用spring-cloud-demo-provider-payment 加入sentinel 作为服务提供方
+
+## 1.1  引入pom
+
+- spring-cloud-demo-provider-payment  
+
+```xml
+<!-- 后续做持久化用到 -->
+<dependency>
+<groupId>com.alibaba.csp</groupId>
+<artifactId>sentinel-datasource-nacos</artifactId>
+</dependency>
+<dependency>
+<groupId>com.alibaba.cloud</groupId>
+<artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+</dependency>
+```
+
+## 1.2 修改配置文件
+
+直接新增配置文件
+
+- application-sentinel.yml
+
+```yaml
+
+spring:
+  application:
+    name: sentinel-provider-payment-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: local:8848
+    sentinel:
+      transport:
+        # 刚才的sentinel 控制台地址
+        dashboard: local:8858
+        # 默认端口  假如被占用从8719开始+1扫描直到直到未被占用的端口
+        port: 8719
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 8401
+
+```
+
+## 1.3 选择这个配置文件启动
+
+- 启动之前应该先将nacos+sentinel 都启动
+
+
+## 1.4 测试，调用之前的接口
+
+在sentinel 控制台中看到对应的请求
+![](img/sentinel-dashboard.jpg)
+
+## 1.5 流控规则介绍
+
+资源名：唯一名称，默认请求路径
+
+针对来源：Sentinel可以针对调用者进行限流 ，填写微服务名，默认 default ， 也可以从簇点路径中直接针对请求添加
+
+阈值类型：
+- QPS（每秒请求数量）：当调用api的QPS达到阈值后进行限流
+- 线程数：调用该api的线程数达到阈值后进行限流
+
+是否集群：
+- 否
+- 集群：1.分摊 2.总值 
+
+流控模式：
+
+直接：api达到限流条件时直接限流
+
+关联：当关联的资源达到阈值时就限流自己
+
+链路：只记录指定链路上的流量（指定资源从入口资源进来的流量，如果达到阈值就进行限流）
+
+流控效果 ： 
+
+- 快速失败：直接失败，抛异常
+
+- Warm Up：根据codeFactor（冷加热因子，默认3）的值，从阈值 codeFactor，经过预热时长，才达到设定的QPS阈值。
+
+- 排队等待 ： 多出来的就排队慢慢处理
+
+> 可以在swagger 接口文档中点击对其测试，或者使用jmeter，postman等工具
+
+## 1.6 熔断降级
+熔断降级会在调用链路中某个资源出现不稳定状态时（例如调用超时或异常比例升高），对这个资源的调用进行限制，
+让请求快速失败，避免影响到其它的资源而导致级联错误。 **没有半开状态**
+
+![](img/sentinel-dashboard-down-level.jpg)
+
+1. 平均响应时间 (DEGRADE_GRADE_RT)：当 1s 内持续进入 N 个请求，对应时刻的平均响应时间（秒级）均超过阈值（count，以 ms 为单位），那么在接下的时间窗口（DegradeRule 中的 timeWindow，以 s 为单位）之内，对这个方法的调用都会自动地熔断（抛出 DegradeException）。注意 Sentinel 默认统计的 RT 上限是 4900 ms，超出此阈值的都会算作 4900 ms，若需要变更此上限可以通过启动配置项 -Dcsp.sentinel.statistic.max.rt=xxx 来配置。
+
+2. 异常比例 (DEGRADE_GRADE_EXCEPTION_RATIO)：当资源的每秒请求量 >= N（可配置），并且每秒异常总数占通过量的比值超过阈值（DegradeRule 中的 count）之后，资源进入降级状态，即在接下的时间窗口（DegradeRule 中的 timeWindow，以 s 为单位）之内，对这个方法的调用都会自动地返回。异常比率的阈值范围是 [0.0, 1.0]，代表 0% - 100%。
+
+3. 异常数 (DEGRADE_GRADE_EXCEPTION_COUNT)：当资源近 1 分钟的异常数目超过阈值之后会进行熔断。注意由于统计时间窗口是分钟级别的，若 timeWindow 小于 60s，则结束熔断状态后仍可能再进入熔断状态。
+
+
+
+## 1.7  热点参数限流
+针对经常访问的数据进行限流，比如：商品id为参数，某一热点商品需要限制一段时间内频繁访问
+
+> 加个测试类：top.freshgeek.springcloud.payment.controller.SentinelTestController
+
+> 注意：这里一定要加注解，并且只会处理blockException 不处理其他异常
+
+
+### 1.7.1 特殊情况例外
+
+可以配置特殊项设定其他限流阈值,类型为基本类型＋string
+
+![](img/sentinel-dashboard-hotkey-exception.jpg)
+
+
+
+## 1.8  系统自适应限流
+
+
+系统自适应限流是为了保证系统不被拖垮，使系统在稳定的前提下，保持系统吞吐量
+
+### 1.8.1 系统保护的问题
+
+长期以来系统保护是根据负载来做系统过载保护。当负载超过某个阈值，就禁止或减少流量进入，负载好转后恢复流量进入。
+
+如果根据当前负载的情况调节流量通过率，始终有延迟。这样会浪费系统处理能力。所以看到的曲线总会有所抖动。
+
+恢复慢，下游应用不可靠导致应用 RT 很好，从而负载很高，但过了一段时间下游恢复了，其实应该大幅增加流量通过率。但这时候load仍然很高。通过率恢复仍然不高。 ==最终目的：在系统不被拖垮的情况下，提高系统的吞吐率，而不是 load 一定要到低于某个阈值==
+
+
+### 1.8.2 能做什么
+从单台机器的 load、CPU 使用率、平均 RT、入口 QPS 和并发线程数等几个维度监控应用指标，让系统尽可能跑在最大吞吐量的同时保证系统整体的稳定性。
+
+- Load 自适应（仅对 Linux/Unix-like 机器生效）：系统的 load1 作为启发指标，进行自适应系统保护。当系统 load1 超过设定的启发值，且系统当前的并发线程数超过估算的系统容量时才会触发系统保护（BBR 阶段）。系统容量由系统的 maxQps * minRt 估算得出。设定参考值一般是 CPU cores * 2.5。
+
+- CPU usage（1.5.0+ 版本）：当系统 CPU 使用率超过阈值即触发系统保护（取值范围 0.0-1.0），比较灵敏。
+
+- 平均 RT：当单台机器上所有入口流量的平均 RT 达到阈值即触发系统保护，单位是毫秒。
+
+- 并发线程数：当单台机器上所有入口流量的并发线程数达到阈值即触发系统保护。
+
+- 入口 QPS：当单台机器上所有入口流量的 QPS 达到阈值即触发系统保护。
+
+
+## 1.9 配置兜底两种方法
+
+- 上面的自定义方法     @SentinelResource(value = "A",blockHandler = "exceptionA")
+
+- 自定义异常处理类     @SentinelResource(value = "B",blockHandlerClass = ExceptionHandler.class,blockHandler = "handler1")
+
+这些都是在hystrix用过类似的就不详细讲了
+
+# 结合 spring-cloud-demo-consumer-order 替代hystrix
+
+## 1.引入pom
+```xml
+
+        <!--alibaba-sentinel 作为熔断降级-->
+        <!-- 后续做持久化用到 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+```
+
+同时把hystrix 代码注释掉
+
+
+## 2. 修改配置文件
+
+打开feign 的sentinel 支持
+
+```yaml
+
+feign:
+  sentinel:
+    enabled: true
+```
+
+## 3. 运行提供方和调用方
+
+执行 spring-cloud-demo-consumer-order 中的 'http://localhost/feign/payment/pay-timeout'
+
+这时出现aop的全局兜底，说明整合成功，能够走到统一的兜底
+
+![](img/sentinel-openfeign-aggregate.jpg)
+
+

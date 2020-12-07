@@ -1,12 +1,7 @@
 package top.freshgeek.springcloud.order.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import top.freshgeek.springcloud.common.payment.CommonResult;
 import top.freshgeek.springcloud.entity.payment.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
@@ -20,12 +15,13 @@ import javax.annotation.Resource;
  * @description
  */
 @Slf4j
-@DefaultProperties(defaultFallback = "globalFallBackTimeOut")
+//@DefaultProperties(defaultFallback = "globalFallBackTimeOut")
 @RestController
 @RequestMapping("/feign/")
 public class OrderOpenFeignController {
 
-	public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
+	public static final String PAY_SERVICE = "cloud-payment-service";
+//	public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
 
 	@Resource
 	private PaymentService paymentService;
@@ -50,7 +46,7 @@ public class OrderOpenFeignController {
 //	@HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
 //			@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")
 //	})
-	@HystrixCommand
+//	@HystrixCommand
 	CommonResult hystrixPayTimeout() {
 		return paymentService.hystrixPayTimeout();
 	}

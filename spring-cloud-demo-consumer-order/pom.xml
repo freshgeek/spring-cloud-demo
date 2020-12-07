@@ -11,6 +11,24 @@
     <artifactId>spring-cloud-demo-consumer-order</artifactId>
 
     <dependencies>
+
+        <!--alibaba-sentinel 作为熔断降级-->
+        <!-- 后续做持久化用到 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <!--alibaba-sentinel 作为熔断降级-->
+        <!-- hystrix 作为熔断降级-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
+<!--        </dependency>-->
+        <!-- hystrix 作为熔断降级-->
         <!--微服务nacos 服务发现 选一 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -68,11 +86,6 @@
         </dependency>
         <!--open feign 使用-->
 
-        <!-- hystrix-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>top.freshgeek.springcloud</groupId>

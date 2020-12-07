@@ -3,7 +3,6 @@ package top.freshgeek.springcloud.order;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -21,7 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // ribbon 使用
 // openfeign 调用
 @EnableFeignClients
-@EnableHystrix
+//@EnableHystrix
 // zookeeper
 //@EnableDiscoveryClient
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)

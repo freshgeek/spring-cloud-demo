@@ -276,8 +276,6 @@ nacos 中有命名空间,默认是public，可以创建其他空间
 docker run -d \
 -e MODE=standalone \
 -e SPRING_DATASOURCE_PLATFORM=mysql \
--e NACOS_AUTH_ENABLE=true \
--e MYSQL_DATABASE_NUM=1 \
 -e MYSQL_SERVICE_HOST=data.keepon.show \
 -e MYSQL_SERVICE_PORT=3306 \
 -e MYSQL_SERVICE_USER=springcloud \

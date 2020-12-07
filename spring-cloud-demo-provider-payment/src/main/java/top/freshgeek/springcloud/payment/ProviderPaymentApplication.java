@@ -22,7 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // zookeeper 单独用这个即可 @EnableDiscoveryClient
 @EnableDiscoveryClient
 // hystrix 使用 @EnableCircuitBreaker
-@EnableCircuitBreaker
+//@EnableCircuitBreaker
 @SpringBootApplication
 @EntityScan("top.freshgeek.springcloud.entity")
 public class ProviderPaymentApplication {
@@ -46,4 +46,5 @@ public class ProviderPaymentApplication {
 		registrationBean.setName("HystrixMetricsStreamServlet");
 		return registrationBean;
 	}
+
 }
