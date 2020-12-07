@@ -23,5 +23,5 @@
     - [Sleuth + Zipkin ](sleuth.md)
 - Alibaba系 技术栈 
   - [Nacos:eureka+config+bus](spring-cloud-alibaba-nacos.md)
-  - [Sentinel:]()
-  - [全局事务Seate]()
+  - [Sentinel:](spring-cloud-alibaba-sentinel.md)
+  - [全局事务Seate](spring-cloud-alibaba-seate.md)
