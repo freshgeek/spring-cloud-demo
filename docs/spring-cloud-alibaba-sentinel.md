@@ -226,3 +226,119 @@ feign:
 ![](img/sentinel-openfeign-aggregate.jpg)
 
 
+
+# 规则持久化
+
+目前 sentinel 是通过控制面板去配置规则，但是如果微服务重启就会把所有的规则都重置，所以我们需要把这些规则持久化，避免出现这种情况
+
+同时sentinel 目前版本支持 配置中心控制台/Sentinel 控制台 → 配置中心 → Sentinel 数据源 → Sentinel，而不是经 Sentinel 数据源推送至配置中心。
+
+![](img/sentinel-pull.png)
+
+
+但是这种情况并没有完成在sentinel dashboard 中配置后推送到nacos ， 只实现了从nacos中读 ，因此需要手动在nacos等配置中心手动配置。
+
+我们先把读的功能解决（在nacos中配置后，能够读取到规则并生效），同时网上已经有通过修改源码方式启动sentinel 可以完成写的功能，放在第二个讲解
+
+## 1.通过 nacos 读取规则配置
+
+### 1.1 加入pom
+客户端读取配置信息只需要在接入sentinel 的客户端加入pom
+```xml
+      <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+```
+
+### 1.2 修改配置文件
+
+```yaml
+spring:
+  cloud:
+    sentinel:
+      datasource:
+        # 名称随意，这里按不同规则区分
+        flow:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            # 规则类型，取值见：
+            # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-system-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-authority-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-param-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: param-flow
+```
+
+### 1.3 在nacos 中手动添加规则
+cloud-payment-service-flow-rules
+SENTINEL_GROUP
+```json
+[
+    {
+        "resource":"/A", 
+        "limitApp":"default", 
+        "grade":1,
+        "count":1, 
+        "strategy":0, 
+        "controlBehavior":0, 
+        "clusterMode":false  
+    }
+]
+```
+![](img/sentinel-nacos-demo-config.jpg)
+
+其中sentinel 生效：
+![](img/sentinel-nacos-demo-config-impl.jpg)
+
+对应关系如下：
+```text
+[
+    {
+        "resource":"/A",//资源名称
+        "limitApp":"default",//来源应用
+        "grade":1,//阈值类型，0线程数，1QPS
+        "count":1,//单机阈值
+        "strategy":0,//流控模式，0表示直接，1表示关联，2表示链路
+        "controlBehavior":0,//流控效果 ，0表示快速失败，1表示warm up，2表示排队等待
+        "clusterMode":false //是否集群
+    }
+]
+```
+
+## 2. 修改源码启动sentinel 完成自动推入nacos
+
+从官方fork 一份代码，或者直接clone 一份代码
+
+- https://github.com/alibaba/Sentinel
+- https://gitee.com/mirrors/Sentinel
+
+或者直接用我的（基于）

@@ -8,9 +8,49 @@ spring:
     sentinel:
       transport:
         # 刚才的sentinel 控制台地址
-        dashboard: local:8858
+        dashboard: localhost:8080
         # 默认端口  假如被占用从8719开始+1扫描直到直到未被占用的端口
         port: 8719
+      datasource:
+        # 名称随意
+        flow:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            # 规则类型，取值见：
+            # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-system-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-authority-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: local:8848
+            dataId: ${spring.application.name}-param-flow-rules
+            groupId: SENTINEL_GROUP
+            data-type: json #数据格式
+            rule-type: param-flow
+
   application:
     name: cloud-consumer-order
     # zipkin+sleuth 请求链路监控
