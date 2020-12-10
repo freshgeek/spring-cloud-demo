@@ -341,8 +341,9 @@ SENTINEL_GROUP
 - https://github.com/alibaba/Sentinel
 - https://gitee.com/mirrors/Sentinel
 
-或者直接用我的（基于1.8） https://gitee.com/pocg/Sentinel/tree/release-1.8/ 
-
+> 或者直接用我的（基于1.8） https://gitee.com/pocg/Sentinel/tree/release-1.8/ 
+>
+> [点击直接查看修改提交内容](https://gitee.com/pocg/Sentinel/commit/cc3bc513f0897bb42779908f6fa377f54e6a5735)
 ### 思路
 
 原理（基于1.8）：

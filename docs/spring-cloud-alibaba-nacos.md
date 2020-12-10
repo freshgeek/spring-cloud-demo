@@ -127,9 +127,11 @@ public class OrderNacosController {
 nacos 支持CAP 理论中的 AP+CP 两者可以根据实际需求切换，不能同时支持
 
 
-# [nacos 配置中心](./spring-cloud-demo-nacos-config/README.md) 
+# nacos 配置中心 
 
-等同于nacos 作为原本的`spring-cloud-demo-spring-config` 配置中心，客户端使用直接连nacos,方式和理念都差不多，只不过nacos 消除了bus 总线，天生集成了自动通知，这里简单演示一下，如果使用
+等同于nacos 作为原本的`spring-cloud-demo-spring-config` 配置中心，
+客户端使用直接连nacos,方式和理念都差不多，
+只不过nacos 消除了bus 总线天生集成了自动通知，这里简单演示一下
 
 
 ## 使用配置
