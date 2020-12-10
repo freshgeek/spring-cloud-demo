@@ -334,11 +334,181 @@ SENTINEL_GROUP
 ]
 ```
 
-## 2. 修改源码启动sentinel 完成自动推入nacos
-
+## 2. 修改源码启动sentinel 完成自动推入 nacos
+> 这里我也很纳闷，看issue 在1.3开始就有这个需求了，到现在1.8还没有提供解决方案，也不知道为啥，希望后面官方能出一个解决，大家就不用修改源码了
 从官方fork 一份代码，或者直接clone 一份代码
 
 - https://github.com/alibaba/Sentinel
 - https://gitee.com/mirrors/Sentinel
 
-或者直接用我的（基于）
+或者直接用我的（基于1.8） https://gitee.com/pocg/Sentinel/tree/release-1.8/ 
+
+### 思路
+
+原理（基于1.8）：
+1. 根据控制台我们点击做增删改查的时候的请求找到后端对应的controller 
+2. 修改对应controller 中保存和查询的 到 nacos （也可以到Apollo，zookeeper等）
+
+
+# 开始修改
+
+## 1. 克隆或者fork 源码打开
+找到 sentinel-dashboard 模块
+
+## 2. 将 pom.xml 注释test
+
+![](img/sentinel-update-xml-test.jpg)
+
+## 3. 复制代码 
+把 test 中的 `com.alibaba.csp.sentinel.dashboard.rule.nacos` 复制到 `com.alibaba.csp.sentinel.dashboard.rule`
+
+![](img/sentinel-update-copy-code.jpg)
+
+当然只有四个,其他都是后面写的：
+- FlowRuleNacosProvider 从nacos 获取`降级规则` 到 dashboard
+- FlowRuleNacosPublisher 把 dashboard `降级规则` 推到 nacos
+- NacosConfig  nacons 所需的bean 包括一个nacos 配置信息 ， 一个`降级规则` 序列化 ， 一个 `降级规则` 反序列化
+- NacosConfigUtil nacos 的一些常量
+
+## 4. 修改代码-连接nacos
+
+sentinel 连 nacos 我们一般都是放在系统变量中方便后面部署时指定
+
+- NacosConfig.java
+
+```java
+	@Bean
+	public ConfigService nacosConfigService() throws Exception {
+		Properties properties = System.getProperties();
+		properties.put(PropertyKeyConst.SERVER_ADDR, DashboardConfig.getConfigNacosServer());
+		if (StringUtil.isNotEmpty(DashboardConfig.getConfigNacosNamespace())){
+			properties.put(PropertyKeyConst.NAMESPACE, DashboardConfig.getConfigNacosNamespace());
+		}
+		return ConfigFactory.createConfigService(properties);
+	}
+```
+同时加两个常量
+- DashboardConfig
+
+```java
+
+public class DashboardConfig {
+
+    public static final int DEFAULT_MACHINE_HEALTHY_TIMEOUT_MS = 60_000;
+
+    /**
+     * CONFIG_NACOS_SERVER
+     */
+    public static final String CONFIG_NACOS_SERVER = "sentinel.dashboard.nacos.server";
+
+    /**
+     * CONFIG_NACOS_NAMESPACE
+     */
+    public static final String CONFIG_NACOS_NAMESPACE = "sentinel.dashboard.nacos.namespace";
+ 
+}
+```
+
+## 5.修改降级 推送-获取
+
+根据api可以知道url ， 找到controller  `FlowControllerV1` 
+
+> 不知道这里为啥多了个V1 , 其实从名字也可以知道是哪个负责哪个
+
+![](img/sentinel-api-controller-comp.jpg)
+
+其实看了后面一些接口，我们就能知道我们其实都是根据 `com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient` 
+这个类 使用 `httpClient` 去 增删改查 
+同时又有一个 repository , 内存中也有一个份 ， 我们这里对 SentinelApiClient 改造比较方便，所以都直接在SentinelApiClient 中修改，避免改动controller方法
+
+![](img/sentinel-update-flow-list.jpg)
+
+1.添加依赖注入
+
+- SentinelApiClient
+```java
+
+    @Autowired(required = false)
+    private DynamicRuleProvider<List<FlowRuleEntity>> flowRuleNacosProvider;
+    @Autowired(required = false)
+    private DynamicRulePublisher<List<FlowRuleEntity>> flowRuleNacosPublisher;
+
+```
+
+2.查询的地方
+
+- com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient#fetchFlowRuleOfMachine
+
+```java
+
+    public List<FlowRuleEntity> fetchFlowRuleOfMachine(String app, String ip, int port) {
+        //  如果不为空就直接从nacos 中查
+        if (flowRuleNacosProvider != null) {
+            try {
+                return flowRuleNacosProvider.getRules(app);
+            } catch (Exception e) {
+                logger.warn("error when get rules from nacos : {} ", e);
+            }
+        }
+        List<FlowRule> rules = fetchRules(ip, port, FLOW_RULE_TYPE, FlowRule.class);
+        if (rules != null) {
+            return rules.stream().map(rule -> FlowRuleEntity.fromFlowRule(app, ip, port, rule))
+                .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+```
+
+3.修改删除
+
+- com.alibaba.csp.sentinel.dashboard.controller.FlowControllerV1#publishRules
+```java
+    private CompletableFuture<Void> publishRules(String app, String ip, Integer port) {
+        List<FlowRuleEntity> rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        return sentinelApiClient.setFlowRuleOfMachineAsync(app, ip, port, rules);
+    }
+```
+可以看到修改删除 都是在操作之后调用这个方法，这个方法就是先从前面说的内存中查出全部的来，调用sentinelApiClient 设置一下
+
+
+所以我们在前面调用flowRuleNacosPublisher 推送到nacos ， 这样思路就很清楚了，改两处就行
+
+- com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient#setFlowRuleOfMachineAsync
+```java
+    public CompletableFuture<Void> setFlowRuleOfMachineAsync(String app, String ip, int port, List<FlowRuleEntity> rules) {
+        if (flowRuleNacosPublisher != null) {
+            try {
+                flowRuleNacosPublisher.publish(app, rules);
+            } catch (Exception e) {
+                logger.warn("error when push rules to nacos : {} ", e);
+            }
+        }
+        return setRulesAsync(app, ip, port, FLOW_RULE_TYPE, rules);
+    }
+```
+
+4.其他几个也是一样的加
+![](img/sentinel-update-controller-list.jpg)
+
+1. NacosConfig 中添加对应规则的序列化-反序列化器
+2. 把flowRuleNacosProvider  flowRuleNacosPublisher 复制一份 修改其中的 RuleEntity 和 `NacosConfigUtil. DATA_ID_POSTFIX`
+3. 找到上图中的controller ，调用SentinelApiClient的方法中提前从Provider读取，和Publisher注入
+> 这里就和前面上一节 手动配置的类型对应上了，有几种规则就有几个 Provider+Publisher
+
+5.全部完成后就可以启动测试了
+可以看到根据名在dashboard中操作，能够自动输出到nacos
+![](img/sentinel-nacos-autosave.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
