@@ -21,6 +21,9 @@
         <module>spring-cloud-demo-stream-rabbitmq-consumer</module>
         <module>spring-cloud-demo-nacos-config</module>
         <module>spring-cloud-demo-hystrix-dashboard-turbine</module>
+        <module>spring-cloud-demo-seata-account-service</module>
+        <module>spring-cloud-demo-seata-order-service</module>
+        <module>spring-cloud-demo-seata-storage-service</module>
     </modules>
     <packaging>pom</packaging>
     <description>this is a project of spring cloud with atguigu</description>
@@ -42,6 +45,7 @@
         <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
         <spring.cloud.alibaba.version>2.1.0.RELEASE</spring.cloud.alibaba.version>
         <hutool-all.version>5.1.0</hutool-all.version>
+        <seata-all.version>1.4.0</seata-all.version>
     </properties>
 
 
@@ -128,7 +132,11 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata-all.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>

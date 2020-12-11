@@ -20,7 +20,7 @@ public class CommonResult<T> {
     private T data;
 
 
-    public static CommonResult of(Integer code, String msg) {
+	public static CommonResult of(Integer code, String msg) {
         return new CommonResult(code, msg, null);
     }
     public static <T> CommonResult<T> of(Integer code, String msg,T data) {
