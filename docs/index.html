@@ -14,7 +14,15 @@
         disqus: 'shortname',
         coverpage: true,
         repo: 'https://gitee.com/pocg/spring-cloud-demo',
-        subMaxLevel: 2,
+        subMaxLevel: 3,
+        auto2top: true,
+        autoHeader: true,
+        pagination: {
+            previousText: '上一节',
+            nextText: '下一节',
+            crossChapter: true,
+            crossChapterText: true,
+        },
         loadSidebar: true
     }
 </script>
@@ -25,5 +33,7 @@
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+<script src="//unpkg.zhimg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+
 </body>
 </html>

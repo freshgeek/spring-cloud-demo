@@ -13,5 +13,5 @@
 - 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
 
 [Gitee](https://gitee.com/pocg/spring-cloud-demo)
-[Getting Started](service-discovery.md)
+[Getting Started](tips.md)
 
