@@ -1,1 +1,14 @@
-/.idea/
+
+# 排除.idea 同时保留.idea/runconfiguration
+/.idea/libraries
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/jarRepositories.xml
+/.idea/workspace.xml
+/.idea/vcs.xml
+
+# 排除编译后的文件
+/*/target/
+
+/.idea/modules.xml
+/.idea/misc.xml

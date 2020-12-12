@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EurekaClusterProviderPaymentApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="spring-cloud-demo-provider-payment" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="top.freshgeek.springcloud.payment.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="top.freshgeek.springcloud.payment.ProviderPaymentApplication" />
+    <option name="ACTIVE_PROFILES" value="cluster1" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
