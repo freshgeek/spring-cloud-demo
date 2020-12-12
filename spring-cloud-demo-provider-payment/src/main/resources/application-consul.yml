@@ -25,7 +25,7 @@ spring:
 #### consul 注册中心  注解与zookeeper 一致
   cloud:
     consul:
-      host: 192.168.203.102
+      host: consul
       port: 8500
       discovery:
         service-name: ${spring.application.name}

@@ -19,6 +19,7 @@
 - 这是目标安装各种服务的虚拟机的IP
 x.x.x.x local
 192.168.203.102 zookeeper
+192.168.203.102 consul
 
 ## [已开启 git page ， 请直接访问 ](https://pocg.gitee.io/spring-cloud-demo/)
 ![已开启 git page ， 请直接访问](https://pocg.gitee.io/spring-cloud-demo/img/md-covery-demo.jpg)

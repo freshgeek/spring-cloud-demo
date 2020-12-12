@@ -69,7 +69,7 @@ spring:
 #### consul 注册中心  注解与zookeeper 一致
   cloud:
     consul:
-      host: 192.168.203.102
+      host: consul
       port: 8500
       discovery:
         service-name: ${spring.application.name}
@@ -91,7 +91,7 @@ spring:
   #### consul 注册中心  注解与zookeeper 一致
   cloud:
     consul:
-      host: 192.168.203.102
+      host: consul
       port: 8500
       discovery:
         service-name: ${spring.application.name}
@@ -108,5 +108,6 @@ spring:
 
 3. 启动完成之后 可以访问 http://localhost/consumer/payment/get/1 或 http://localhost/swagger-ui.html 测试完成客户端访问服务端
 
+> consul 大小写服务名都能识别
 
 
