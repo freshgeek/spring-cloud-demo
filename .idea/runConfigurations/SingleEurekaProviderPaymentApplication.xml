@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="SingleEurekaProviderPaymentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="SingleEurekaProviderPaymentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="single-eureka-productor-consumer">
     <module name="spring-cloud-demo-provider-payment" />
     <extension name="coverage">
       <pattern>

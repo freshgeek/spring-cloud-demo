@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="EurekaClusterConsumerOrderApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="EurekaClusterConsumerOrderApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="eureka-cluster-productor-consumer">
     <module name="spring-cloud-demo-consumer-order" />
     <extension name="coverage">
       <pattern>
