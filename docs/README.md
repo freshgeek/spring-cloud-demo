@@ -1,12 +1,17 @@
 # SpringCloud 示例工程
 
-本项目记录了springcloud 技术栈的学习示例与讲解,提供示例代码.
-其中包含了老的技术选型,如:eureka,ribbon,hystrix,zuul等老项目可能在用的,以及新的alibaba,nacos,sentienl等技术,
+### 介绍
+跟着视频学习的全部示例,包含SpringCloud 生态的各种解决方案(包含流行,停更,以后推荐等)的示例代码
+
+同时包含了自己的一些思考与一些较好博客的知识整合，如：
+
+- 每个中间件的部署说明
+- 规划抽取公共类-通用接口
+- 用AOP解决服务降级带来的兜底方法耦合与实现问题
+- 使用Hystrix Dashboard 监控集群问题
+- Nacos 集成外部数据源
+- 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
+
 如有不妥欠缺之处,欢迎大家以Issue提出
 
-## 前提约定
-本项目使用Idea,同时使用`-Dserver.port=` 添加虚拟机端口方式和指定配置环境`profile`方式替代复制多个模块方式演示不同环境/集群情况
-
-配置启动方式如图(后面不一一介绍)：
-![配置启动方式](img/configure.jpg)
-
+### [下一节 前提约定](tips.md)

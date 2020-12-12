@@ -12,6 +12,6 @@
 - Nacos 集成外部数据源
 - 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
 
-[Gitee](https://gitee.com/pocg/spring-cloud-demo)
-[Getting Started](tips.md)
+[Git 代码](https://gitee.com/pocg/spring-cloud-demo)
+[开始阅读](tips.md)
 
