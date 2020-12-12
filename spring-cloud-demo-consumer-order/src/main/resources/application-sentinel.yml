@@ -4,7 +4,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: local:8848
+        server-addr: nacos:8848
     sentinel:
       transport:
         # 刚才的sentinel 控制台地址
@@ -15,7 +15,7 @@ spring:
         # 名称随意
         flow:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-flow-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
@@ -24,28 +24,28 @@ spring:
             rule-type: flow
         degrade:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-degrade-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: degrade
         system:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-system-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: system
         authority:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-authority-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: authority
         param-flow:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-param-flow-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
@@ -55,7 +55,7 @@ spring:
     name: cloud-consumer-order
     # zipkin+sleuth 请求链路监控
   zipkin:
-    base-url: http://local:9411
+    base-url: http://zipkin:9411
   sleuth:
     sampler:
       #采样率值介于 0 到 1 之间，1 则表示全部采集

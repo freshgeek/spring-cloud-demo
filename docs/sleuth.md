@@ -7,7 +7,7 @@
 docker run -p 9411:9411 openzipkin/zipkin:2.17.2
 ```
 
-http://local:9411/zipkin/
+http://zipkin:9411/zipkin/
 
  
 # 解决问题
@@ -55,7 +55,7 @@ http://local:9411/zipkin/
 spring:
     # zipkin+sleuth 请求链路监控
   zipkin:
-    base-url: http://local:9411
+    base-url: http://zipkin:9411
   sleuth:
     sampler:
       #采样率值介于 0 到 1 之间，1 则表示全部采集
@@ -70,7 +70,7 @@ spring:
 3. 左上角筛选服务名等信息,然后点击搜索图标
 ![](img/zipkin-dashboard-filter.jpg)
 4. 可以看到一个服务请求列表(我这里就请求了一次),然后找一个点击进去
-> 类似这种的,说明是查看这次的trace id 的详情 `http://local:9411/zipkin/traces/e8d73624b3f5db32`
+> 类似这种的,说明是查看这次的trace id 的详情 `http://zipkin:9411/zipkin/traces/e8d73624b3f5db32`
 
 ![](img/zipkin-dashboard-filter-trace-id.jpg)
 可以看到该次请求的耗时:包括总用时,调用深度,调用哪个服务端,路径,服务端耗时

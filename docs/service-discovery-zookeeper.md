@@ -74,10 +74,10 @@ docker-compose -f -d docker-compose.yml up
 ```xml
 
 <!--zookeeper 作为 注册中心-->
- <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-        </dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+</dependency>
        
 ```
 
@@ -88,6 +88,7 @@ docker-compose -f -d docker-compose.yml up
 - spring-cloud-demo-provider-payment
 
 application-zookeeper.yml
+
 ```yaml
 
 server:

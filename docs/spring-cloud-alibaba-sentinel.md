@@ -7,7 +7,7 @@ docker run --name sentinel -d \
 bladex/sentinel-dashboard
 ```
 
-访问 `http://local:8858/#/dashboard` 
+访问 `http://sentinel:8858/#/dashboard` 
 ![](img/sentinel-dashboard.jpg)
 
 
@@ -61,11 +61,11 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: local:8848
+        server-addr: nacos:8848
     sentinel:
       transport:
         # 刚才的sentinel 控制台地址
-        dashboard: local:8858
+        dashboard: sentinel:8858
         # 默认端口  假如被占用从8719开始+1扫描直到直到未被占用的端口
         port: 8719
 management:
@@ -261,7 +261,7 @@ spring:
         # 名称随意，这里按不同规则区分
         flow:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-flow-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
@@ -270,28 +270,28 @@ spring:
             rule-type: flow
         degrade:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-degrade-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: degrade
         system:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-system-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: system
         authority:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-authority-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式
             rule-type: authority
         param-flow:
           nacos:
-            server-addr: local:8848
+            server-addr: nacos:8848
             dataId: ${spring.application.name}-param-flow-rules
             groupId: SENTINEL_GROUP
             data-type: json #数据格式

@@ -123,7 +123,7 @@ spring:
           environment: # 设置rabbitmq的相关的环境配置
             spring:
               rabbitmq:
-                host: local
+                host: rabbitmq
                 port: 5672
                 username: guest
                 password: guest
@@ -136,7 +136,7 @@ spring:
 eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka01:8761/eureka
   instance:
     lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
     lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）
@@ -326,7 +326,7 @@ spring:
           environment: # 设置rabbitmq的相关的环境配置
             spring:
               rabbitmq:
-                host: local
+                host: rabbitmq
                 port: 5672
                 username: guest
                 password: guest
@@ -335,14 +335,14 @@ spring:
           destination: studyExchange # 表示要使用的Exchange名称定义
           content-type: application/json # 设置消息类型，本次为对象json，如果是文本则设置“text/plain”
           binder: defaultRabbit # 设置要绑定的消息服务的具体设置
-          #group: liuscoding
+          #group: consumer-g1
 
 
 
 eureka:
   client: # 客户端进行Eureka注册的配置
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka01:8761/eureka
   instance:
     lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
     lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）

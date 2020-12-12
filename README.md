@@ -17,11 +17,24 @@
 ## 前提准备
 
 127.0.0.1 eureka01
+
 127.0.0.1 eureka02
-- 这是目标安装各种服务的虚拟机的IP
-x.x.x.x local
-192.168.203.102 zookeeper
-192.168.203.102 consul
+
+- 这是目标安装各种服务的虚拟机的IP:
+
+
+- 192.168.203.102 zookeeper
+
+- 192.168.203.102 consul
+
+- 192.168.203.102 nacos
+
+- 192.168.203.102 sentinel
+
+- 192.168.203.102 rabbitmq
+
+- 192.168.203.102 zipkin
+
 
 
 ## [已开启 git page ， 请直接访问 ](https://pocg.gitee.io/spring-cloud-demo/)
