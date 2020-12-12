@@ -12,7 +12,7 @@ x.x.x.x local
 192.168.203.102 consul
 
 
-同时提供了启动文件 , 配置好依赖即可启动测试 
+同时提供了启动文件 , 配置好依赖即可启动测试 , 但是还是建议对应讲解文档测试 
 
 ![](img/configuration-save-muti-services.png)
 
