@@ -12,6 +12,13 @@
 - Nacos 集成外部数据源
 - 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
 
+## 前提准备
+
+127.0.0.1 eureka01
+127.0.0.1 eureka02
+- 这是目标安装各种服务的虚拟机的IP
+x.x.x.x local
+
 ## [已开启 git page ， 请直接访问 ](https://pocg.gitee.io/spring-cloud-demo/)
 ![已开启 git page ， 请直接访问](https://pocg.gitee.io/spring-cloud-demo/img/md-covery-demo.jpg)
 
