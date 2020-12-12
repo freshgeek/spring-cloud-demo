@@ -69,30 +69,16 @@ docker-compose -f -d docker-compose.yml up
 
 需要把其他的服务发现注册,如前面的eureka等注释掉，打开zookeeper同时引入对应版本号的zookeeper客户端
 
+> 我这里在父工程加入了版本控制,不然需要排除zookeeper 客户端重新引入
+
 ```xml
 
 <!--zookeeper 作为 注册中心-->
  <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.zookeeper</groupId>
-                    <artifactId>zookeeper</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.6.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+       
 ```
 
 ## 3. 修改yml文件
@@ -126,7 +112,7 @@ spring:
 # 单个就配置单独一个即可
   cloud:
     zookeeper:
-      connect-string: 192.168.203.102:2181,192.168.203.102:2182,192.168.203.102:2183
+      connect-string: zookeeper:2181 , zookeeper:2182 , zookeeper:2183
 ```
 
 - spring-cloud-demo-consumer-order
@@ -141,7 +127,7 @@ spring:
   # 单个就配置单独一个即可
   cloud:
     zookeeper:
-      connect-string: 192.168.203.102:2181,192.168.203.102:2182,192.168.203.102:2183
+      connect-string: zookeeper:2181 , zookeeper:2182 , zookeeper:2183
 
 ```
 
@@ -156,7 +142,7 @@ spring:
 ### 5. 测试访问
 访问客户端调用服务端接口
 
-http://localhost/consumer/payment/get/1
+http://localhost/zookeeper/payment/get/1
 
 或者通过
 
