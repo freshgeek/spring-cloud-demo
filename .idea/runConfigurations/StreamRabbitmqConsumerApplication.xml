@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="StreamRabbitmqConsumerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="spring-cloud-stream-rabbitmq" nameIsGenerated="true">
+    <module name="spring-cloud-demo-stream-rabbitmq-consumer" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="top.freshgeek.springcloud.stream.consumer.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="top.freshgeek.springcloud.stream.consumer.StreamRabbitmqConsumerApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

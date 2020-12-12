@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="NacosConsumerOrderApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="nacos-productor-consumer">
+    <module name="spring-cloud-demo-consumer-order" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="top.freshgeek.springcloud.order.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="top.freshgeek.springcloud.order.ConsumerOrderApplication" />
+    <option name="ACTIVE_PROFILES" value="nacos" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
