@@ -30,11 +30,13 @@ Fescar 开源后，蚂蚁金服加入 Fescar 社区参与共建，并在 Fescar 
 mkdir -p /home/data/docker/seata-server/config
 docker run -d --name seata-server \
         -p 8091:8091 \
+        -e SEATA_IP=192.168.35.16 \
         -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
         -v /home/data/docker/seata-server/config:/root/seata-config  \
         --privileged=true \
         seataio/seata-server:1.4.0
 ```
+ip 绑定你客户端能访问到seata的IP
 
 ![](img/seata-no-file-exception.jpg)
 
@@ -45,7 +47,6 @@ docker run -d --name seata-server \
 cd /home/data/docker/seata-server/config
 wget https://raw.githubusercontent.com/seata/seata/1.4.0/script/server/config/registry.conf
 wget https://raw.githubusercontent.com/seata/seata/1.4.0/script/server/config/file.conf
-docker restart seata-server
 ```
 
 当然不同版本切换一下对应的分支,我这里使用的是1.4.0 
@@ -55,7 +56,46 @@ docker restart seata-server
 - registry 注册中心分别可以指指定`file,nacos,eureka,redis,zk,consul,etcd3,sofa`
 - config  配置中心分别可以指指定`file、nacos 、apollo、zk、consul、etcd3`
 
-然后接着就是每个对应的连接信息,后面我们把seata集成入nacos 完成全家桶
+**注意**:我们这里要把注册中心,配置中心 都换成nacos,seata 也交给seata管理
+
+
+- 解决“/bin/bash^M: bad interpreter
+> 在执行shell脚本时提示这样的错误主要是由于shell脚本文件是dos格式，即每一行结尾以\r\n来标识，而unix格式的文件行尾则以\n来标识
+
+- io.seata.common.exception.FrameworkException: can not connect to services-server.
+```text
+2020-12-13 23:23:22.966 ERROR [seata-storage-service,,,] 13836 --- [eoutChecker_2_1] i.s.c.r.netty.NettyClientChannelManager  : 0304 register RM failed.
+
+io.seata.common.exception.FrameworkException: can not connect to services-server.
+	at io.seata.core.rpc.netty.NettyClientBootstrap.getNewChannel(NettyClientBootstrap.java:182) ~[seata-all-1.4.0.jar:1.4.0]
+	at io.seata.core.rpc.netty.NettyPoolableFactory.makeObject(NettyPoolableFactory.java:58) ~[seata-all-1.4.0.jar:1.4.0]
+	at io.seata.core.rpc.netty.NettyPoolableFactory.makeObject(NettyPoolableFactory.java:34) ~[seata-all-1.4.0.jar:1.4.0]
+	at org.apache.commons.pool.impl.GenericKeyedObjectPool.borrowObject(GenericKeyedObjectPool.java:1220) ~[commons-pool-1.6.jar:1.6]
+	at io.seata.core.rpc.netty.NettyClientChannelManager.doConnect(NettyClientChannelManager.java:221) [seata-all-1.4.0.jar:1.4.0]
+	at io.seata.core.rpc.netty.NettyClientChannelManager.acquireChannel(NettyClientChannelManager.java:107) [seata-all-1.4.0.jar:1.4.0]
+	at io.seata.core.rpc.netty.NettyClientChannelManager.reconnect(NettyClientChannelManager.java:189) [seata-all-1.4.0.jar:1.4.0]
+	at io.seata.core.rpc.netty.AbstractNettyRemotingClient$1.run(AbstractNettyRemotingClient.java:114) [seata-all-1.4.0.jar:1.4.0]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [na:1.8.0_221]
+	at java.util.concurrent.FutureTask.runAndReset$$$capture(FutureTask.java:308) [na:1.8.0_221]
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java) [na:1.8.0_221]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180) [na:1.8.0_221]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294) [na:1.8.0_221]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [na:1.8.0_221]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [na:1.8.0_221]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) [netty-all-4.1.43.Final.jar:4.1.43.Final]
+	at java.lang.Thread.run(Thread.java:748) [na:1.8.0_221]
+Caused by: io.seata.common.exception.FrameworkException: connect failed, can not connect to services-server.
+	at io.seata.core.rpc.netty.NettyClientBootstrap.getNewChannel(NettyClientBootstrap.java:177) ~[seata-all-1.4.0.jar:1.4.0]
+	... 16 common frames omitted
+
+```
+> 如果配置在云服务器，这个seata_ip一定要写，本地可以不写。不然注册到nacos里面的是容器的本地ip，那样的话，就不能ping通，因此客户端就无法访问到seata。
+  
+sed -i "s/\r//" filename
+
+然后接着就是每个对应的连接信息
+
+后面我们把seata集成入nacos 完成全家桶
 
 
 ## 成功搭建之后我们开始写代码

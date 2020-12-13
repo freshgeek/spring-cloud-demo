@@ -4,7 +4,7 @@
 搭配zipkin使用(这里的zipkin,提供了请求数据的存储和展示), 使用docker 运行启动
 
 ```shell script
-docker run -p 9411:9411 openzipkin/zipkin:2.17.2
+docker run --name=zipkin -d  -p 9411:9411 openzipkin/zipkin:2.17.2
 ```
 
 http://zipkin:9411/zipkin/

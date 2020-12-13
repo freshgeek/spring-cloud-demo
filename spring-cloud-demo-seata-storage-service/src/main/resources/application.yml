@@ -1,7 +1,9 @@
 server:
-  port: 2003
+  port: 2002
 
 spring:
+  application:
+    name: seata-storage-service
   datasource:
     # 当前数据源操作类型
     type: com.alibaba.druid.pool.DruidDataSource
@@ -15,25 +17,15 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  zipkin:
-    base-url: http://zipkin:9411
-  sleuth:
-    sampler:
-      #采样率值介于 0 到 1 之间，1 则表示全部采集
-      probability: 1
   cloud:
+    alibaba:
+      seata:
+        tx-service-group: storage_tx_group
     nacos:
       discovery:
         server-addr: nacos:8848
-    alibaba:
-      seata:
-        tx-service-group: account_tx_group
+
 logging:
   level:
     io:
       seata: info
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'

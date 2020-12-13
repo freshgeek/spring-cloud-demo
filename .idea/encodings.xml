@@ -17,6 +17,11 @@
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-provider-payment/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-provider-payment/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-account-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-account-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-order-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-order-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-storage-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-cloud-demo-seata-storage-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-spring-config-client/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-spring-config-client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-cloud-demo-spring-config/src/main/java" charset="UTF-8" />

@@ -286,7 +286,7 @@ docker run -d \
 -p 8848:8848 \
 --restart=always \
 --name nacos-standalone-mysql-docker \
-nacos/nacos-server
+nacos/nacos-server:1.4.0
 ```
 
 > 附上初始化脚本：[nacos-mysql.sql](https://github.com/alibaba/nacos/blob/master/distribution/conf/nacos-mysql.sql)

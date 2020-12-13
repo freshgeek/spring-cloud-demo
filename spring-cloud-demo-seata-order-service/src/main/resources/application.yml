@@ -1,5 +1,5 @@
 server:
-  port: 2003
+  port: 2001
 
 spring:
   datasource:
@@ -27,7 +27,7 @@ spring:
         server-addr: nacos:8848
     alibaba:
       seata:
-        tx-service-group: account_tx_group
+        tx-service-group: order_tx_group
 logging:
   level:
     io:

@@ -21,13 +21,4 @@ public class Account {
 	 */
 	private BigDecimal total;
 
-	/**
-	 * 已用额度
-	 */
-	private BigDecimal used;
-
-	/**
-	 * 剩余额度
-	 */
-	private BigDecimal residue;
 }
