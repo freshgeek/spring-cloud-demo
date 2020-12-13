@@ -24,18 +24,29 @@ Fescar 开源后，蚂蚁金服加入 Fescar 社区参与共建，并在 Fescar 
 我们这里采用指定文件的方式docker 部署入门 , 后面我们再部署一个外部数据源版本
  
 - 我这里把 `/home/data/docker/seata-server/config` 作为挂载配置目录
+
 ```shell script
-mkdir -f /home/data/docker/seata-server/config
-docker run --name seata-server \
+
+mkdir -p /home/data/docker/seata-server/config
+docker run -d --name seata-server \
         -p 8091:8091 \
         -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
         -v /home/data/docker/seata-server/config:/root/seata-config  \
+        --privileged=true \
         seataio/seata-server:1.4.0
-
 ```
 
 ![](img/seata-no-file-exception.jpg)
-- 这边他不会自动生成文件,官网docker部署文档也没有文件示例,我在 `https://github.com/seata/seata/tree/1.4.0/script/server/config` 下是默认的配置文件
+
+- 这边他不会自动生成文件,官网docker部署文档也没有文件示例,
+我在 `https://github.com/seata/seata/tree/1.4.0/script/server/config` 下是默认的配置文件
+
+```shell script
+cd /home/data/docker/seata-server/config
+wget https://raw.githubusercontent.com/seata/seata/1.4.0/script/server/config/registry.conf
+wget https://raw.githubusercontent.com/seata/seata/1.4.0/script/server/config/file.conf
+docker restart seata-server
+```
 
 当然不同版本切换一下对应的分支,我这里使用的是1.4.0 
 ![](img/seata-upload-file-success.jpg)
@@ -58,7 +69,7 @@ docker run --name seata-server \
 
 ### 1.创建模块,引入pom
 
-这里太多了就不全贴出来了,可以直接在项目模块中看,这里需要注意的就是seata版本要与server 版本一致 , 可以在父工程中指定版本
+这里太多了就不全贴出来了,可以直接在项目模块中看,这里需要注意的就是seata版本要与server 版本一致,我这里是1.4.0并且在父工程spring-cloud-demo中指定了版本
 
 ```xml
     <!--seata 全局事务管理-->
