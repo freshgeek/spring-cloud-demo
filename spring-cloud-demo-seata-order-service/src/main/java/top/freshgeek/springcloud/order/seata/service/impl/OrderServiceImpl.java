@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	@Transactional(rollbackFor = Throwable.class)
-	@GlobalTransactional(rollbackFor = Exception.class)
 	public void createUnroll(Order order) throws InterruptedException {
 		log.info("----->开始新建订单");
 		//1 新建订单
