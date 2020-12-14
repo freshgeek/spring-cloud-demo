@@ -3,12 +3,12 @@ package top.freshgeek.springcloud.storage.seata.service.impl;
 import cn.hutool.core.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.freshgeek.springcloud.storage.entity.Storage;
 import top.freshgeek.springcloud.storage.seata.dao.StorageRepository;
 import top.freshgeek.springcloud.storage.seata.service.StorageService;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Slf4j
@@ -23,7 +23,7 @@ public class StorageServiceImpl implements StorageService {
      * 扣减库存
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     public void decrease(Long productId, Integer count) {
         log.info("------->storage-service中扣减库存开始");
         Optional<Storage> byId =

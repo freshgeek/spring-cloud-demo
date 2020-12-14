@@ -21,9 +21,22 @@ public class AccountController implements AccountFeignService {
      *
      * @return
      */
+    @Override
     @PostMapping("/account/decrease")
-    public CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) {
+    public CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException {
         accountService.decrease(userId, money);
+        return CommonResult.of(200, "扣减账户余额成功！");
+    }
+
+    /**
+     * 扣减账户余额
+     *
+     * @return
+     */
+    @Override
+    @PostMapping("/account/decrease-exception")
+    public CommonResult decreaseException(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException {
+        accountService.decreaseException(userId, money);
         return CommonResult.of(200, "扣减账户余额成功！");
     }
 

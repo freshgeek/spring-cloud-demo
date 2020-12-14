@@ -5,5 +5,10 @@ import top.freshgeek.springcloud.order.entity.Order;
 
 @Service
 public interface OrderService {
-    void create(Order order);
+
+	void createUnroll(Order order) throws InterruptedException;
+
+	void create(Order order) throws InterruptedException;
+
+	void createExceptionRoll(Order order) throws InterruptedException;
 }

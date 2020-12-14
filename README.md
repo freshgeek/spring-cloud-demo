@@ -20,7 +20,8 @@
 
 127.0.0.1 eureka02
 
-- 这是目标安装各种服务的虚拟机的IP:
+
+这是目标安装各种服务的虚拟机的IP:
 
 
 - 192.168.203.102 zookeeper
@@ -35,6 +36,7 @@
 
 - 192.168.203.102 zipkin
 
+- 192.168.203.102 seata
 
 
 ## [已开启 git page ， 请直接访问 ](https://pocg.gitee.io/spring-cloud-demo/)

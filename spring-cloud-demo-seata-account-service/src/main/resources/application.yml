@@ -27,7 +27,7 @@ spring:
         server-addr: nacos:8848
     alibaba:
       seata:
-        tx-service-group: account_tx_group
+        tx-service-group: account-service-group
 logging:
   level:
     io:

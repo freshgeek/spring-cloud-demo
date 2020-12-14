@@ -22,5 +22,8 @@ public interface AccountFeignService {
      * @return
      */
     @PostMapping("/account/decrease")
-    CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money);
+    CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException;
+
+	@PostMapping("/account/decrease-exception")
+	CommonResult decreaseException(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException;
 }

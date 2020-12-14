@@ -20,7 +20,7 @@ spring:
   cloud:
     alibaba:
       seata:
-        tx-service-group: storage_tx_group
+        tx-service-group: storage-service-group
     nacos:
       discovery:
         server-addr: nacos:8848

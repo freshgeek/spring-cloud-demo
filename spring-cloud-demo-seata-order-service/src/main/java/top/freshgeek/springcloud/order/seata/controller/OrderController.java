@@ -16,8 +16,21 @@ public class OrderController implements OrderFeignService {
     private OrderService orderService;
 
     @GetMapping("/order/create")
-    public CommonResult create(Order order) {
+    public CommonResult create(Order order) throws InterruptedException {
+        // 正常创建
         orderService.create(order);
+        return CommonResult.of(200, "订单创建成功");
+    }
+    @GetMapping("/order/create-excetion")
+    public CommonResult createException(Order order) throws InterruptedException {
+        // 异常不回滚状态
+        orderService.createUnroll(order);
+        return CommonResult.of(200, "订单创建成功");
+    }
+    @GetMapping("/order/create-excetion-roll")
+    public CommonResult createExceptionRoll(Order order) throws InterruptedException {
+        // 异常回滚
+        orderService.createExceptionRoll(order);
         return CommonResult.of(200, "订单创建成功");
     }
 

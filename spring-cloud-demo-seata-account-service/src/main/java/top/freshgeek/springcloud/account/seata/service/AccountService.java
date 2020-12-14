@@ -1,5 +1,7 @@
 package top.freshgeek.springcloud.account.seata.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,6 +9,9 @@ import java.math.BigDecimal;
  */
 public interface AccountService {
 
-	void decrease(Long userId, BigDecimal money);
+	@Transactional(rollbackFor = Throwable.class)
+	void decreaseException(Long userId, BigDecimal money) throws InterruptedException;
+
+	void decrease(Long userId, BigDecimal money) throws InterruptedException;
 
 }

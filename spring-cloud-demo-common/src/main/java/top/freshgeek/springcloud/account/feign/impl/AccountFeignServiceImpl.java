@@ -14,4 +14,9 @@ public class AccountFeignServiceImpl implements AccountFeignService {
         return null;
     }
 
+    @Override
+    public CommonResult decreaseException(Long userId, BigDecimal money) throws InterruptedException {
+        return null;
+    }
+
 }

@@ -30,13 +30,13 @@ Fescar 开源后，蚂蚁金服加入 Fescar 社区参与共建，并在 Fescar 
 mkdir -p /home/data/docker/seata-server/config
 docker run -d --name seata-server \
         -p 8091:8091 \
-        -e SEATA_IP=192.168.35.16 \
+        -e SEATA_IP=192.168.203.102 \
         -e SEATA_CONFIG_NAME=file:/root/seata-config/registry \
         -v /home/data/docker/seata-server/config:/root/seata-config  \
         --privileged=true \
         seataio/seata-server:1.4.0
 ```
-ip 绑定你客户端能访问到seata的IP
+SEATA_IP 绑定你客户端能访问到seata的IP
 
 ![](img/seata-no-file-exception.jpg)
 
@@ -57,10 +57,70 @@ wget https://raw.githubusercontent.com/seata/seata/1.4.0/script/server/config/fi
 - config  配置中心分别可以指指定`file、nacos 、apollo、zk、consul、etcd3`
 
 **注意**:我们这里要把注册中心,配置中心 都换成nacos,seata 也交给seata管理
+> 自己的nacos IP 换成自己的
+
+![registry](img/seata-registry-nacos.png)
+
+![config](img/seata-config-nacos.png)
 
 
+### nacos 配置从哪里来
+
+我们把seata的配置中心放在nacos,那么初始化的配置从哪来?
+
+- https://github.com/seata/seata/tree/1.4.0/script
+
+我们服务端配置在server目录下,配置中心的在 [config-center 1.4.0 版本的地址 https://github.com/seata/seata/tree/1.4.0/script/config-center](https://github.com/seata/seata/tree/1.4.0/script/config-center) 下 , 还有后面的客户端的在client下
+
+![](img/seata-github-script.png)
+
+1. clone git
+
+如果慢,也可以找到gitee 上面的 , 注意切换分支就行
+
+```shell script
+mkdir -p /home/data/docker/seata-server/git-seata
+cd /home/data/docker/seata-server/git-seata
+git clone https://github.com/seata/seata.git
+git checkout 1.4.0 
+
+# 如果都是默认的直接调用就好了 
+sh ${SEATAPATH}/script/config-center/nacos/nacos-config.sh -h localhost -p 8848 -g SEATA_GROUP -t 5a3c7d6c-f497-4d68-a71a-2e5e3340b3ca -u username -w password
+
+```
+
+**SEATAPATH 这个变量是对应的seata 路径要替换的**
+
+这里的参数就是nacos的地址和分组之类的 , 如果都是默认的直接调用就好了 
+
+> sh ${SEATAPATH}/script/config-center/nacos/nacos-config.sh 
+
+完成之后,可以在nacos 中看到这些配置,我们把seata-server 数据存储在数据库中,我们就直接在nacos上面修改了:
+1. store.mode 改为 db
+2. store.db.url 改为自己的地址
+3. store.db.user 用户名
+4. store.db.password 密码
+
+其他的一些连接信息也可以自己调整,
+
+再重启
+
+### 导入配置中心原理
+
+Seata-server 也是一个微服务应用,需要配置中心和注册中心,前面配置的文件 `registry.conf` 就是指定了配置中心和注册中心的地址
+
+注册中心就是服务发现和注册嘛,然后后面需要seata全局事务管理的微服务客户端可以找到seata
+
+配置中心就是一些seata-server 运行需要的配置项存放和值,和开始file.conf一样
+
+其中重要的一个k-v 是 `service.vgroupMapping.my_test_tx_group=default`  , 这个指定了一个微服务的事务分组,后面客户端我们需要用到,这里可以暂时先不配置
+
+
+其中我配置过程中遇到的两个坑,贴一下:
 - 解决“/bin/bash^M: bad interpreter
 > 在执行shell脚本时提示这样的错误主要是由于shell脚本文件是dos格式，即每一行结尾以\r\n来标识，而unix格式的文件行尾则以\n来标识
+> 使用 sed -i "s/\r//" filename
+>
 
 - io.seata.common.exception.FrameworkException: can not connect to services-server.
 ```text
@@ -90,12 +150,6 @@ Caused by: io.seata.common.exception.FrameworkException: connect failed, can not
 
 ```
 > 如果配置在云服务器，这个seata_ip一定要写，本地可以不写。不然注册到nacos里面的是容器的本地ip，那样的话，就不能ping通，因此客户端就无法访问到seata。
-  
-sed -i "s/\r//" filename
-
-然后接着就是每个对应的连接信息
-
-后面我们把seata集成入nacos 完成全家桶
 
 
 ## 成功搭建之后我们开始写代码
