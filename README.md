@@ -11,10 +11,13 @@
 - 使用Hystrix Dashboard 监控集群问题
 - Nacos 集成外部数据源
 - 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
+- 完成Seata-Nacos-Db-Client 整合搭建
 
 
 
 ## 前提准备
+
+配置中均使用域名连接，以下是我的hosts映射：
 
 127.0.0.1 eureka01
 

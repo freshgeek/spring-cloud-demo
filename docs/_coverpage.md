@@ -11,6 +11,8 @@
 - 使用Hystrix Dashboard 监控集群问题
 - Nacos 集成外部数据源
 - 实现Sentinel界面配置后自动推送Nacos（不需要在Nacos配置）
+- 完成Seata-Nacos-Db-Client 整合搭建
+
 
 [Git 代码](https://gitee.com/pocg/spring-cloud-demo)
 [开始阅读](tips.md)
