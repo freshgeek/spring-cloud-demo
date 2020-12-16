@@ -1,5 +1,6 @@
 # Spring Config 
 Spring Cloud Config 是 Spring Cloud 家族中最早的配置中心，虽然后来又发布了 Consul 可以代替配置中心功能，但是 Config 依然适用于 Spring Cloud 项目，通过简单的配置即可实现功能。
+
 Spring Cloud Config 以 github 作为配置存储。
 除了 git 外，还可以用数据库、svn、本地文件等作为存储。
 
@@ -46,6 +47,7 @@ Spring Cloud Config 主要解决了微服务中的各项配置的解耦合和统
 ## 2. 写yml
 
 这里就是以本项目git作为地址,然后搜索 `spring-cloud-config-repo` 下的配置文件
+
 ```yaml
 server:
   port: 3344
@@ -62,6 +64,7 @@ spring:
             - spring-cloud-config-repo
       ####读取分支
       label: master
+
 ```
 
 ## 3. 启动类
@@ -72,15 +75,17 @@ spring:
 ## 4. 测试
 
 1. 在git路径中加上配置文件,演示不同环境下的文件获取
+
 - config-dev.yml
--  config-test.yml
--  config-prod.yml
+- config-test.yml
+- config-prod.yml
 
 2. 通过直接访问配置中心的路径方式获取git上配置文件信息,如:
 `http://localhost:3344/master/config-dev.yml`
 
 规则如下:
-```java
+
+```text
 
 /{application}/{profile}[/{label}]
 /{application}-{profile}.yml
@@ -90,7 +95,7 @@ spring:
 
 ```
 
-如果可以访问,我们引入客户端
+如果可以访问,我们接着引入客户端,去读取配置中心的属性文件
 
 # 客户端编码读取配置中心
 
@@ -131,9 +136,10 @@ spring:
 ```
 
 ## 2. 修改配置文件 bootstrap.yml
+
 这里使用的不再是application.yml , 因为我们程序运行的属性需要去远程的配置中心读取,所以在应用启动前需要获取到配置参数,因此,在引导配置文件`bootstrap.yml`中配置
 
-> 具体区别,可以在我的博客中 中专门介绍 几个配置文件的区别与优先级关系
+- bootstrap.yml
 
 ```yaml
 server:
@@ -163,7 +169,9 @@ management:
 ```
 
 ## 3. 启动类
+
 普通启动类即可
+
 ```java
 
 package top.freshgeek.springcloud.spring.configclient;
@@ -216,8 +224,17 @@ public class ConfigController {
 
 ```
 
+
+
 ## 4. 测试
+
+启动配置中心和客户端
+在启动配置中,spring-config-single-muti:
+- SpringConfigApplication [devtools]
+- SingleSpringConfigClientApplication [devtools]
+
 访问客户端 `http://localhost:3355/configInfo` 可以显示正确的配置信息
+
 
 ## 5. 问题
 1. 现在需要临时修改配置文件怎么办?能及时刷新到配置中心嘛?能及时刷新到客户端吗?
@@ -244,6 +261,7 @@ docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:
 
 
 ## 1. 引入pom
+
 - spring-cloud-demo-spring-config
 - spring-cloud-demo-spring-config-client
 
@@ -307,6 +325,12 @@ management:
 dev->3355
 dev->3366
 
+或者使用启动配置-spring-config-single-muti:
+- SpringConfigApplication [devtools]
+- SpringConfigClientApplication-dev3355 [devtools]
+- SpringConfigClientApplication-dev3366 [devtools]
+
+
 ## 4. 同时启动多个客户端测试一次刷新处处生效
 1. 启动配置中心和两个客户端
 - http://localhost:3344/master/config-dev.yml
@@ -323,8 +347,6 @@ dev->3366
 其中通知方式有两种:
 - 全局通知 `curl -X POST "http://localhost:3344/actuator/bus-refresh"`
 - 定点通知 `curl -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3355"`
-
-
 
 
 
