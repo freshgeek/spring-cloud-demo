@@ -34,6 +34,7 @@ docker run -d --net=host --name consul -e 'CONSUL_LOCAL_CONFIG={"skip_leave_on_i
 - spring-cloud-demo-consumer-order
 
 ```xml
+<!--排除其他服务发现后引入consul-->
 <dependency>
    <groupId>org.springframework.cloud</groupId>
    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
@@ -104,7 +105,7 @@ spring:
 
 1. 同样在启动类加上 `@EnableDiscoveryClient` 注解即可
 
-2. 添加配置profile `consul` 配置 启动 服务端+客户端
+2. 添加配置profile `consul` 配置 启动 服务端+客户端 , 或直接使用启动配置  `consul-productor-consumer`
 
 3. 启动完成之后 可以访问 http://localhost/consumer/payment/get/1 或 http://localhost/swagger-ui.html 测试完成客户端访问服务端
 
