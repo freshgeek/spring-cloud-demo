@@ -2,29 +2,7 @@ server:
   port: 2003
 
 spring:
-  datasource:
-    # 当前数据源操作类型
-    type: com.alibaba.druid.pool.DruidDataSource
-    # mysql驱动类
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://data.keepon.site:3306/springcloud-seata?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
-    username: springcloud
-    password: springcloud
-    # 这里用了jpa 省得写dao了
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  zipkin:
-    base-url: http://zipkin:9411
-  sleuth:
-    sampler:
-      #采样率值介于 0 到 1 之间，1 则表示全部采集
-      probability: 1
   cloud:
-    nacos:
-      discovery:
-        server-addr: nacos:8848
     alibaba:
       seata:
         tx-service-group: account-service-group
@@ -32,6 +10,7 @@ logging:
   level:
     io:
       seata: info
+
 management:
   endpoints:
     web:
