@@ -43,32 +43,27 @@ eviction-interval-timer-in-ms: 设定检测周期
 ### 1. 引入pom文件
 
 ```xml
-        <!--    这个是重点 ， -->
+        <!--    这个是重点 ，引入eureka  -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
         </dependency>
-
         <!--热部署-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -93,8 +88,6 @@ eviction-interval-timer-in-ms: 设定检测周期
 ```yaml
 server:
   port: 8761
-
-
 eureka:
   instance:
     hostname: localhost
@@ -130,7 +123,6 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @author chen.chao
  * @version 1.0
  * @date 2020/4/29 11:31
- * @description
  */
 @EnableEurekaServer
 @SpringBootApplication
@@ -139,7 +131,6 @@ public class EurekaServerApplication {
         SpringApplication.run(EurekaServerApplication.class,args);
     }
 }
-
 ```
 
 ### 启动日志
@@ -154,6 +145,7 @@ public class EurekaServerApplication {
 ```
 
 这是正常的检测，在检测不正常的节点剔除，如果不想看到可以调整日志级别屏蔽，如：
+
 ```yaml
 logging:
   level:
@@ -173,7 +165,7 @@ logging:
 
 ### 1. 引入pom 
 
-> 需要连接eureka server 那么就要引用 eureka client 的 依赖 
+> 需要连接eureka-server 那么就要引用 eureka client 的 依赖 
 >
 > 服务发现使用一个即可，其他几个后面文章介绍
 >
@@ -280,7 +272,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // 在eureka 环境下才加@EnableEurekaClient
 @EnableEurekaClient
 @SpringBootApplication
-@EntityScan("top.freshgeek.springcloud.entity")
+@EntityScan("top.freshgeek.springcloud.payment.entity")
 public class ProviderPaymentApplication {
 
 	public static void main(String[] args) {
@@ -367,7 +359,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import Payment;
 
 import javax.annotation.Resource;
 
@@ -385,11 +377,7 @@ import javax.annotation.Resource;
 @RestController
 public class OrderTemplateController {
 
-//    static final String PAYMENT = "http://localhost:8001";
-    public static final String PAY_SERVICE = "CLOUD-PAYMENT-SERVICE";
     static final String PAYMENT = "http://"+PAY_SERVICE;
-    // zk 的是小写
-//    static final String PAYMENT = "http://cloud-payment-service";
 
     @Resource
     private RestTemplate restTemplate;
@@ -411,13 +399,15 @@ public class OrderTemplateController {
 ```
 
 
-这样我们就完成了微服务的注册和发现了,可以测试调用
+这样我们就完成了微服务的注册和发现了,可以测试调用 
+
+> 如:启动配置 single-eureka-productor-consumer
 
 ## Eureka 集群
 
 作为微服务，如果是单体server，那肯定不行，必须上集群。
 
-Eureka 集群 是把每一台节点作为服务提供者注册进其他eureka server 实例中，如相互守望：
+Eureka 集群 是把**每一台节点作为服务提供者注册进其他eureka server 实例中相互守望**：
 
 Eureka Server 集群配置引入服务提供者和生产者，pom不用变，只是需要修改eureka server 多启动几个实例即可，同时在服务注册和调用方配置多个eureka地址即可
 
@@ -427,6 +417,9 @@ Eureka Server 集群配置引入服务提供者和生产者，pom不用变，只
 复制多份application.yml ， 这里复制两个：
 - `application-cluster-01.yml`
 - `application-cluster-02.yml`
+
+> 注意: 这里是1注册进2 , 2 注册进 1
+> 如果三个的话:1注册进23, 2注册进13 ,  3注册进12
 
 application-cluster-01.yml
 ```yaml
@@ -479,6 +472,8 @@ eureka:
 ### 第三步：配置启动微服务 生产者-消费者
 
 只需要在生产和消费者配置两个eureka 地址即可
+
+> 如 启动配置 eureka-cluster-productor-consumer 
 
 ```yaml
 
