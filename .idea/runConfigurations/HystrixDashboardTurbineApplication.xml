@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HystrixDashboardTurbineApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+  <configuration default="false" name="HystrixDashboardTurbineApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="hystrix-turbine-consul-productor-consumer" nameIsGenerated="true">
     <module name="spring-cloud-demo-hystrix-dashboard-turbine" />
     <extension name="coverage">
       <pattern>

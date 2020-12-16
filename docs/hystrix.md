@@ -103,8 +103,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.IdUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.payment.dao.PaymentJpaRepository;
 
 import java.util.Optional;
@@ -162,7 +162,12 @@ public class PaymentService {
 	// --------------------- 服务降级 -----------------------------------------
  
 }
-// ---------------------- controller ---------------加入调用降级方法
+```
+
+- controller  加入调用降级方法
+
+```java
+
 
 
 package top.freshgeek.springcloud.payment.controller;
@@ -172,8 +177,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.payment.service.PaymentService;
 
 import java.util.List;
@@ -219,13 +224,13 @@ public class PaymentController {
 }
 
 ```
+
 这里就是两个注解：
 - @HystrixCommand 指明兜底方法和属性
 - @HystrixProperty 其中属性`execution.isolation.thread.timeoutInMilliseconds`表明运行超过1秒会触发降级
 
 ### 2.1.1 全部属性：
-
-com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netflix.hystrix.HystrixCommandKey, com.netflix.hystrix.HystrixCommandProperties.Setter, java.lang.String)
+全部属性在com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netflix.hystrix.HystrixCommandKey, com.netflix.hystrix.HystrixCommandProperties.Setter, java.lang.String) 方法中
 
 我们可以直接启动服务调用这个服务类Controller ， 因为加了sleep 3秒 所以肯定会降级返回降级方法
 
@@ -242,7 +247,7 @@ com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netfli
 
 接着开始改造客户端 spring-cloud-demo-consumer-order
 
-1. 加入hystrix pom
+1.加入hystrix pom
 
 ```xml
    <dependency>
@@ -251,9 +256,9 @@ com.netflix.hystrix.HystrixCommandProperties.HystrixCommandProperties(com.netfli
         </dependency>
 ```
 
-2. 开启注解 @EnableHystrix
+2.开启注解 @EnableHystrix
 
-3. 编写业务类
+3.编写业务类
 
 ```java
 
@@ -266,8 +271,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 import javax.annotation.Resource;
@@ -320,11 +325,11 @@ public class OrderOpenFeignController {
 ```
 
 
->这里我省略了加 open feign 方法步骤 ， 正常情况先加了才能调用
+>这里我省略了加 openfeign 的 PaymentService 方法步骤，正常情况先加了才能调用
 
 与上面套路一致，加入了两个注解然后自己写一个超时方法自己兜底
 
-4. 开启注册发现和服务端，客户端 测试调用这个报错方法，然后报错走兜底方法
+4.开启注册发现和服务端，客户端 测试调用这个报错方法，然后报错走兜底方法
 
 ## 2.3 耦合问题
 
@@ -346,8 +351,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 import javax.annotation.Resource;
@@ -411,17 +416,19 @@ public class OrderOpenFeignController {
 2. 所有方法不能都是一样的签名，签名不同兜底方法就会出现错误
 
 ### 2.3.2 解耦合
+
 针对上面两个问题，于是有了新的解决方案：fallback 实现类
 
 ```java
+
 package top.freshgeek.springcloud.order.feign;
 
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.controller.OrderOpenFeignController;
 import top.freshgeek.springcloud.order.feign.fallback.FallbackPaymentService;
 
@@ -450,14 +457,14 @@ public interface PaymentService {
 
 ```
 
-> @FeignClient(value = OrderOpenFeignController.PAY_SERVICE, fallback = FallbackPaymentService.class)
+- @FeignClient(value = OrderOpenFeignController.PAY_SERVICE, fallback = FallbackPaymentService.class)
 
 ```java
 package top.freshgeek.springcloud.order.feign.fallback;
 
 import org.springframework.stereotype.Component;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 /**
@@ -515,7 +522,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -559,13 +566,17 @@ Circuit Breaker主要包括如下6个参数：
 1、circuitBreaker.enabled
 
 是否启用熔断器，默认是TRUE。
+
 2 、circuitBreaker.forceOpen
 
 熔断器强制打开，始终保持打开状态，不关注熔断开关的实际状态。默认值FLASE。
+
 3、circuitBreaker.forceClosed
+
 熔断器强制关闭，始终保持关闭状态，不关注熔断开关的实际状态。默认值FLASE。
 
 4、circuitBreaker.errorThresholdPercentage
+
 错误率，默认值50%，例如一段时间（10s）内有100个请求，其中有54个超时或者异常，那么这段时间内的错误率是54%，大于了默认值50%，这种情况下会触发熔断器打开。
 
 5、circuitBreaker.requestVolumeThreshold
@@ -595,8 +606,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.commons.util.IdUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.payment.dao.PaymentJpaRepository;
 
 import java.util.Optional;
@@ -700,11 +711,17 @@ public class PaymentService {
 
 - 错误百分比阈值：在快照时间窗内请求总数超过阈值，且错误次数占总请求次数的比值大于阈值，断路器将会打开
 
+### 3.2.3 缺陷
+我们只能在代码中配置,或者抽取到配置文件,不够灵活
+
+也不能针对特定的地址随时加随时生效,或者针对qps等限流降级,或者对热门商品限制降级等 , 这些在后续的sentinel 中都有详细的解决方案
 
 # 4 图形化界面 Dashboard
 
 Hystrix 与eureka 思想一样 ， 想用服务先建工程，然后引入依赖，自己启动
+
 创建新模块
+
 - spring-cloud-demo-hystrix-dashboard
 
 ## 4.1 引入依赖
@@ -771,31 +788,26 @@ public class HystrixDashboardApplication {
 
 ```
 
+- HystrixDashboardApplication
+
 然后启动 访问 `http://localhost:9001/hystrix`
  
 ![](img/hystrix-dashboard.jpg) 
+
 
 然后启动 eureka 和 服务端 ,在路径中输入对应服务端的IP端口路径,如下:
 
 ![输入](img/hystrix-dashboard-input.jpg)
 
 
-## 4.4 对应的图表 含义
-
-![](img/hystrix-dashboard-detail.png)
-
+## 4.4 eureka+hystrix-dashboard 坑
 
 当然你可能看到 ：
 
 ![](img/hystrix-dashboard-error.jpg)
 
 
-那就要看下这个坑
-
-
-## 4.5 eureka+hystrix-dashboard 坑
-
-因为兼容性bug 需要在服务端 spring-cloud-demo-provider-payment 加入代码以适配
+那就要看下这个坑,因为兼容性bug 需要在服务端 spring-cloud-demo-provider-payment 加入代码以适配
 
 ```java
 	/**
@@ -815,23 +827,29 @@ public class HystrixDashboardApplication {
 ```
 
 
+## 4.5 对应的图表 含义
+
+![](img/hystrix-dashboard-detail.png)
+
+
+
 ## 4.6 loading 状态 
 
 如果一直是loading 也没有报错 说明现在还没有服务，需要访问一下服务端的带有hystrix 的接口
 
-Hystrix DashBoard监控的服务都是要求有带上熔断端点的，即带上@HystrixCommand注解的方法，调用没有熔断端点的方法没法得到监控。
+Hystrix DashBoard监控的服务都是要求有带上熔断端点的，
+即带上@HystrixCommand注解的方法同时需要打开@EnableCircuitBreaker，
+调用没有熔断端点的方法没法得到监控。
 
 ## 4.7 集群负载均衡监控
-我们不可能只监控一个实例，应该需要监控一个服务的全部实例 ， 所以这里需要引入
-Turbine，通过它来汇集监控信息，并将信息提供给Hystrix Dashboard来集中展示
+
+我们不可能只监控一个实例，应该需要监控一个服务的全部实例 ， 所以这里需要引入Turbine，通过它来汇集监控信息，并将信息提供给Hystrix Dashboard来集中展示
 
 ![](img/hystrix-dashboard-turbine.png)
 
-因此需要搭建 spring-cloud-demo-hystrix-dashboard-turbine ， 通过`spring-cloud-demo-hystrix-dashboard-turbine`
-来聚合集群内的服务监控，统一输出到hystrix-dashboard
+因此需要搭建 spring-cloud-demo-hystrix-dashboard-turbine ， 通过`spring-cloud-demo-hystrix-dashboard-turbine`来聚合集群内的服务监控，统一输出到hystrix-dashboard
 
 ### 4.7.1 引入pom
-
 
 > 因为电脑性能小 我就没去弄eureka 集群了 ， 还是沿用最后演示的consul 
 
@@ -882,7 +900,7 @@ turbine:
 spring:
   cloud:
     consul:
-      host: 192.168.203.102
+      host: consul
       port: 8500
       discovery:
         service-name: ${spring.application.name}
@@ -940,10 +958,13 @@ public class HystrixDashboardTurbineApplication {
 3. 启动 监控
 4. 启动turbine 
 5. 访问带有熔断接口
-6. 观察单个 ， 如： http://localhost:8002/hystrix.stream
-7. 观察多个 ， 如： http://localhost:9002/turbine.stream
+6. 观察单个,填入： http://localhost:8002/hystrix.stream
+7. 观察多个,填入： http://localhost:9002/turbine.stream
 
 ![](img/hystrix-dashboard-turbine-success.jpg)
+
+- hystrix-turbine-consul-productor-consumer
+
 
 并且可以在hosts 中看到有多个，如果数量不对可能还没有访问到那个节点
 
