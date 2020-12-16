@@ -2,8 +2,8 @@ package top.freshgeek.springcloud.order.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 import javax.annotation.Resource;

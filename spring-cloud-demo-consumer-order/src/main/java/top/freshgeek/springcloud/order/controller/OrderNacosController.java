@@ -1,10 +1,9 @@
 package top.freshgeek.springcloud.order.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 
 import javax.annotation.Resource;
 

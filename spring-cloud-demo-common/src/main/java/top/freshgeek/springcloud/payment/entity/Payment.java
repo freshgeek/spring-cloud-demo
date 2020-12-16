@@ -1,4 +1,4 @@
-package top.freshgeek.springcloud.entity.payment;
+package top.freshgeek.springcloud.payment.entity;
 
 import lombok.Data;
 

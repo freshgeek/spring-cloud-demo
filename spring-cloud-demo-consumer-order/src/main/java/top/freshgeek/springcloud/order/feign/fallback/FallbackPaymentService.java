@@ -1,8 +1,8 @@
 package top.freshgeek.springcloud.order.feign.fallback;
 
 import org.springframework.stereotype.Component;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 /**

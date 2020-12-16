@@ -1,4 +1,4 @@
-package top.freshgeek.springcloud.common.payment;
+package top.freshgeek.springcloud.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -24,7 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 // hystrix 使用 @EnableCircuitBreaker
 //@EnableCircuitBreaker
 @SpringBootApplication
-@EntityScan("top.freshgeek.springcloud.entity")
+@EntityScan("top.freshgeek.springcloud.payment.entity")
 public class ProviderPaymentApplication {
 
 	public static void main(String[] args) {

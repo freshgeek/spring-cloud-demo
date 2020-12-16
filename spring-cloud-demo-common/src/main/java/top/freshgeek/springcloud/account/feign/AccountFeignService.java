@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.freshgeek.springcloud.account.feign.impl.AccountFeignServiceImpl;
 import top.freshgeek.springcloud.common.MiscroServiceNameConstants;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 
 import java.math.BigDecimal;
 
@@ -22,7 +22,7 @@ public interface AccountFeignService {
      * @return
      */
     @PostMapping("/account/decrease")
-    CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException;
+	CommonResult decrease(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException;
 
 	@PostMapping("/account/decrease-exception")
 	CommonResult decreaseException(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws InterruptedException;

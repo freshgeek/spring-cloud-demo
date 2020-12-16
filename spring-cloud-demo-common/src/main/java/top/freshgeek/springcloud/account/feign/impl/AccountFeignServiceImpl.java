@@ -2,7 +2,7 @@ package top.freshgeek.springcloud.account.feign.impl;
 
 import org.springframework.stereotype.Component;
 import top.freshgeek.springcloud.account.feign.AccountFeignService;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 
 import java.math.BigDecimal;
 

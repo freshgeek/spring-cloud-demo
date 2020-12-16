@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.context.annotation.Configuration;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.freshgeek.springcloud.account.feign.AccountFeignService;
 import top.freshgeek.springcloud.account.seata.service.AccountService;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;

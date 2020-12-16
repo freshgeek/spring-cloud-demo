@@ -2,7 +2,7 @@ package top.freshgeek.springcloud.storage.seata.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.freshgeek.springcloud.common.payment.CommonResult;
+import top.freshgeek.springcloud.common.dto.CommonResult;
 import top.freshgeek.springcloud.storage.entity.feign.StorageFeignService;
 import top.freshgeek.springcloud.storage.seata.service.StorageService;
 
@@ -17,6 +17,7 @@ public class StorageController implements StorageFeignService {
      *
      * @return
      */
+    @Override
     @PostMapping("/storage/decrease")
     public CommonResult decrease(@RequestParam("productId") Long productId, @RequestParam("count") Integer count) {
         storageService.decrease(productId, count);
