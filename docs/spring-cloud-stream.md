@@ -107,6 +107,9 @@ docker run -d --name rbmq3.7.14 -p 15672:15672 -p 5672:5672  docker.io/rabbitmq:
 ### 2.2 yml
 
 
+- spring-cloud-demo-stream-rabbitmq-provider
+    - application.yml
+
 ```yaml
 
 server:
@@ -153,12 +156,12 @@ package top.freshgeek.springcloud.stream.provider;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author chen.chao
  */
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class StreamRabbitmqProviderApplication {
 
@@ -172,13 +175,13 @@ public class StreamRabbitmqProviderApplication {
 
 ### 2.4 业务类
 
-这里附一下常用api
+这里附一下常用api图解
 
 ![常用api](img/stream-common-api.jpg)
 
+所以我们这里要加上消息提供类
 
 - 消息接口
-
 
 ```java
 
@@ -196,6 +199,13 @@ public interface MessageProvider {
 ```
 
 - 实现类
+
+注意加上 @EnableBinding(Source.class) 
+
+同时引入 
+>	@Resource
+>
+>	private MessageChannel output;
 
 ```java
 
@@ -230,7 +240,7 @@ public class MessageProviderImpl implements MessageProvider {
 
 ```
 
-- 最后加个controller 方便测试调用
+- 最后加个controller 方便测试调用发送消息
 
 ```java
 
@@ -263,6 +273,8 @@ public class MessageController {
 
 然后启动eureka后启动 `spring-cloud-demo-stream-rabbitmq-provider` , 访问 `http://localhost:8801/send`
 
+也提供了启动配置spring-cloud-stream-rabbitmq:
+- StreamRabbitmqProviderApplication [devtools]
 
 ## 消费者配置
 
@@ -360,12 +372,12 @@ package top.freshgeek.springcloud.stream.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * @author chen.chao
  */
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class StreamRabbitmqConsumerApplication {
 
@@ -410,6 +422,11 @@ public class ReceiveMessageListener {
 
 ```
 
+## 启动测试
+
+启动配置 spring-cloud-stream-rabbitmq 
+
+> 使用eureka 需要排除其他注册服务中心jar
 
 ## 其他消费问题总结
 
@@ -429,6 +446,7 @@ public class ReceiveMessageListener {
 问题产生的原因同样是因为没分组,所以应用启动时会随机生成组名,而随机生成的组名没用订阅消息消费,所以不能消费
 
 我们需要在消息消费者端配置组,在消费者挂了之后,重新启动因为已经订阅了生产者,就会自动消费
+
 
 
 
