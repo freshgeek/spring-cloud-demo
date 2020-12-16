@@ -58,7 +58,7 @@ docker-compose -f -d docker-compose.yml up
 
 ![日志](img/zookeeper-console-log.jpg)
 
-> 注意这里的版本号 `3.6.2` ! 后面需要版本号一致 
+> 注意这里的版本号 `3.6.2` ! 后面客户端jar需要版本号一致 
 > 同时如果与版本不一致出现问题，可以找官网查看变更
 
 ## 2. 修改  pom 
@@ -116,9 +116,8 @@ spring:
       connect-string: zookeeper:2181 , zookeeper:2182 , zookeeper:2183
 ```
 
-- spring-cloud-demo-consumer-order
+- spring-cloud-demo-consumer-order  的 application-zookeeper.yml
 
-消费者 application-zookeeper.yml
 ```yaml
 server:
   port: 80
@@ -138,13 +137,17 @@ spring:
 2. 设定profile zookeeper 启动支付和订单服务 
 
 > 需要注意的是，在zookeeper中服务名都是小写的 所以如果用Eureka的大写的服务名会报错找不到
+> 这里我复制了一个新的zookeeper controller 
+
+
 
 
 ### 5. 测试访问
-访问客户端调用服务端接口
 
-http://localhost/zookeeper/payment/get/1
+> 可以启动  zookeeper-productor-consumer
+> 注意排除 其他服务发现客户端
 
-或者通过
+访问客户端调用服务端接口或者使用swagger调试
 
-swagger-ui http://localhost/swagger-ui.html  调试 
+- http://localhost/zookeeper/payment/get/1
+- swagger-ui http://localhost/swagger-ui.html   

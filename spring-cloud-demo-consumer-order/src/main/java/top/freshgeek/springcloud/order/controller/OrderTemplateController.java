@@ -26,8 +26,6 @@ public class OrderTemplateController {
 
 	static final String PAYMENT = "http://" + MiscroServiceNameConstants.CLOUD_PAYMENT_SERVICE_UP;
 
-	static final String PAYMENT_LOW = "http://" + MiscroServiceNameConstants.CLOUD_PAYMENT_SERVICE;
-
 	@Resource
 	private RestTemplate restTemplate;
 
