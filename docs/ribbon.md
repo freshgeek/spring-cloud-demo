@@ -87,6 +87,8 @@ public class RestConfig {
 
 最后启动一下 spring-cloud-demo-consumer-order 消费者
 
+或者直接使用启动配置  `eureka-cluster-productor-consumer`
+
 可以观察到三个服务轮询打印sql
 
 
