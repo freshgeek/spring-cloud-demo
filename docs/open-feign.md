@@ -63,8 +63,8 @@ package top.freshgeek.springcloud.order.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.controller.OrderOpenFeignController;
 import top.freshgeek.springcloud.order.feign.fallback.FallbackPaymentService;
 
@@ -103,8 +103,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import top.freshgeek.springcloud.common.payment.CommonResult;
-import top.freshgeek.springcloud.entity.payment.Payment;
+import top.freshgeek.springcloud.common.dto.CommonResult;
+import top.freshgeek.springcloud.payment.entity.Payment;
 import top.freshgeek.springcloud.order.feign.PaymentService;
 
 import javax.annotation.Resource;
