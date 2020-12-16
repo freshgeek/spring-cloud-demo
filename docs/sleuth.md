@@ -36,7 +36,7 @@ http://zipkin:9411/zipkin/
 
 ## 1. 引入pom
 
-在微服务(需要记录的都要引入,**可以考虑放入公共模块**)中引入pom
+在微服务(需要记录的都要引入,**我放入公共模块了**)中引入pom
 
 ```xml
    <!--包含了sleuth+zipkin-->
@@ -55,12 +55,15 @@ http://zipkin:9411/zipkin/
 spring:
     # zipkin+sleuth 请求链路监控
   zipkin:
+    # 默认地址时localhost:9411 所以如果没有配置会有报错,但是不影响主业务
     base-url: http://zipkin:9411
   sleuth:
     sampler:
       #采样率值介于 0 到 1 之间，1 则表示全部采集
       probability: 1
 ```
+
+
 
 ## 3. 访问测试
 
