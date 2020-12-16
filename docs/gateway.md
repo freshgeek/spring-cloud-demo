@@ -84,6 +84,7 @@ API 网关是一个处于应用程序或服务（提供 REST API 接口服务）
 > 两个都写了下，我这还是用consul演示 省得启动那么多服务
 
 ```yaml
+
 server:
   port: 9527
 
@@ -92,7 +93,7 @@ spring:
     name: cloud-gateway-service
   cloud:
     consul:
-      host: 192.168.203.102
+      host: consul
       port: 8500
       discovery:
         service-name: ${spring.application.name}
