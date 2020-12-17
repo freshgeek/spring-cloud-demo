@@ -1,0 +1,35 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: nacos-payment-service
+  datasource:
+    # 当前数据源操作类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    # mysql驱动类
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://data.keepon.site:3306/springcloud-payment?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8
+    username: springcloud
+    password: springcloud
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  zipkin:
+    base-url: http://zipkin:9411
+  sleuth:
+    sampler:
+      #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
+  cloud:
+    nacos:
+      discovery:
+        #Nacos服务注册中心地址
+        server-addr: nacos:80
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

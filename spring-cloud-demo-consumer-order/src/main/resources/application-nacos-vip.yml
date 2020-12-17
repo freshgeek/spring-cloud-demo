@@ -1,0 +1,29 @@
+server:
+  port: 80
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: nacos:80
+  application:
+    name: cloud-consumer-order
+    # zipkin+sleuth 请求链路监控
+  zipkin:
+    base-url: http://zipkin:9411
+  sleuth:
+    sampler:
+      #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
+logging:
+  level:
+    top.freshgeek.springcloud.order.feign.PaymentService: debug
+
+ribbon:
+  #请求处理的超时时间
+  ReadTimeout: 5000
+
+# feign 的hystrix 支持开启 默认是关闭
+feign:
+  hystrix:
+    enabled: true
+

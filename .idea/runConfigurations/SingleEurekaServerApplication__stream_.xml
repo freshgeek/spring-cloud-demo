@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SingleEurekaServerApplication (stream)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" folderName="spring-cloud-stream-rabbitmq">
+    <module name="spring-cloud-demo-eureka-server" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="top.freshgeek.springcloud.eureka.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <option name="SPRING_BOOT_MAIN_CLASS" value="top.freshgeek.springcloud.eureka.EurekaServerApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
