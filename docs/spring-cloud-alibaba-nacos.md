@@ -455,6 +455,7 @@ server {
 
 这个时候输入 `http://nacos/nacos/` 应该就是集群地址了,这样我们就完成了ngix+ 3 nacos + db 部署了
 
+同时可以使用启动配置 nacos-cluster-productor-consumer  测试能否成功
 
 
 
